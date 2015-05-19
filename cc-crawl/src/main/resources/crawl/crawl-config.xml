@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Crawl>
+		<Targets>
+			<Target>
+				<Code>15002</Code>
+				<Runnable>true</Runnable>
+				<Class>org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager</Class>
+				<ThreadPoolSize>100</ThreadPoolSize>
+				<Timeout>45</Timeout>
+			</Target>
+		</Targets>
+	</Crawl>
+</Root>

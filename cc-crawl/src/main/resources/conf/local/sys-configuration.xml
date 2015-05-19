@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Database>
+		<MongoDB>
+			<Ip>${Maven.MongoDB.Ip}</Ip>
+			<Port>${Maven.MongoDB.Port}</Port>
+			<Username>${Maven.MongoDB.Username}</Username>
+			<Password>${Maven.MongoDB.Password}</Password>
+			<DatabaseName>${Maven.MongoDB.DatabaseName}</DatabaseName>
+			<AdminDatabaseName>${Maven.MongoDB.AdminDatabaseName}</AdminDatabaseName>
+		</MongoDB>
+	</Database>
+
+	<Executor>
+		<NumThreads>200</NumThreads>
+		<MaxQueueSize>200</MaxQueueSize>
+	</Executor>
+
+	<Crawl>
+		<SleepingTime>10000</SleepingTime>
+	</Crawl>
+
+	<Collector>
+		<BackupEndName>.bak</BackupEndName>
+		<Threshold>0.9</Threshold>
+	</Collector>
+
+	<Log>
+		<ResponseObject>
+			<Enabled>true</Enabled>
+		</ResponseObject>
+		<Address>${Log.Address}</Address>
+		<Machine>${Log.Machine}</Machine>
+	</Log>
+
+	<IsTestEnvironment>false</IsTestEnvironment>
+</Root>

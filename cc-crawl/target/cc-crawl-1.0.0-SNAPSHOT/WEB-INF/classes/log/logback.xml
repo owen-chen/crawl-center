@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- scanning is done "in-thread", that is anytime a printing method of logger is invoked. For example, for a logger named myLogger, when you write "myLogger.debug("hello");", and if 
+	the scan attribute is set to true, then ReconfigureOnChangeFilter will be invoked. Moreover, the said filter will be invoked even if myLogger is disabled for the debug level. -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level- %msg {%logger %method\(\) %line}%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log.%d{yyyy-MM-dd}.zip
+			</FileNamePattern>
+		</rollingPolicy>
+
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level- %msg {%logger %method\(\)-%line}%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- Basic Cyclic buffer <appender name="CYCLIC" class="ch.qos.logback.core.read.CyclicBufferAppender"> <MaxSize>512</MaxSize> </appender> -->
+
+	<!-- Cyclic buffer with Evaluator <appender name="CYCLIC" class="ch.qos.logback.core.read.CyclicBufferAppender"> <filter class="ch.qos.logback.core.filter.EvaluatorFilter"> <evaluator 
+		name="loggingTaskEval"> <expression> logger.getName().contains("LoggingTask") &amp;&amp; message.contains("Howdydy-diddly-ho") &amp;&amp; (timeStamp - event.getStartTime()) >= 20000 
+		</expression> </evaluator> <OnMatch>DENY</OnMatch> </filter> <MaxSize>512</MaxSize> -->
+
+	<!-- TurboFilter: by MDC value <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter"> <MDCKey>username</MDCKey> <Value>sebastien</Value> <OnMatch>ACCEPT</OnMatch> </turboFilter> -->
+
+	<!-- TurboFilter: by Marker <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter"> <Name>HOWDY_FILTER</Name> <Marker>HOWDY</Marker> <OnMatch>DENY</OnMatch> </turboFilter> -->
+
+	<!-- JMX Configurator -->
+	<jmxConfigurator />
+
+	<!-- set all class from org.xxx.yyy package level to INFO -->
+	<logger name="org" level="INFO" />
+
+	<root>
+		<level value="INFO" />
+
+		<!-- this appender should be commented on production environment -->
+		<appender-ref ref="STDOUT" />
+
+		<appender-ref ref="FILE" />
+
+		<!-- Part I: Basic Cyclic buffer <appender-ref ref="CYCLIC" /> -->
+	</root>
+</configuration>

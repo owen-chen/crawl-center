@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Infosources>
+		<Infosource>
+			<Code>15002</Code>
+			<Name>sina finance stock</Name>
+			<RequestHandlerClass>org.archmage.cc.infosource.request.stock.SinaStockInfosourceRequest</RequestHandlerClass>
+			<ResponseClass>org.archmage.cc.service.dto.response.stock.SinaStockResponseObject</ResponseClass>
+			<SubInfosources>
+				<SubInfosource>
+					<Name>stock.sina</Name>
+					<Url>http://hq.sinajs.cn/list={0}{1}</Url>
+					<ResponseClass>org.archmage.cc.service.dto.response.stock.SinaStockResponseObject</ResponseClass>
+					<ParserClass>org.archmage.cc.infosource.parse.stock.SinaStockParser</ParserClass>
+					<ResponseType>html</ResponseType>
+				</SubInfosource>
+			</SubInfosources>
+		</Infosource>
+	</Infosources>
+</Root>
