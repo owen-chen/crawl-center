@@ -25,7 +25,7 @@ import org.archmage.cc.crawl.bean.log.CollectorInnerLog;
 import org.archmage.cc.crawl.bean.log.CrawlJobLogBean;
 import org.archmage.cc.crawl.daosupport.ExtendedDaoSupport;
 import org.archmage.cc.framework.log.LogContainer;
-import org.archmage.cc.infosource.bean.ResponseObject;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 import org.slf4j.Logger;
 import org.springframework.data.mongodb.core.MongoTemplate;
 

@@ -2,17 +2,17 @@
 <Root>
 	<Infosources>
 		<Infosource>
-			<Code>15002</Code>
-			<Name>sina finance stock</Name>
+			<Code>10001</Code>
+			<Name>sina stock info</Name>
 			<RequestHandlerClass>org.archmage.cc.infosource.request.stock.SinaStockInfosourceRequest</RequestHandlerClass>
-			<ResponseClass>org.archmage.cc.service.dto.response.stock.SinaStockResponseObject</ResponseClass>
+			<ResponseClass>org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject</ResponseClass>
 			<SubInfosources>
 				<SubInfosource>
 					<Name>stock.sina</Name>
-					<Url>http://hq.sinajs.cn/list={0}{1}</Url>
-					<ResponseClass>org.archmage.cc.service.dto.response.stock.SinaStockResponseObject</ResponseClass>
-					<ParserClass>org.archmage.cc.infosource.parse.stock.SinaStockParser</ParserClass>
-					<ResponseType>html</ResponseType>
+					<Url>http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&amp;num=10000&amp;sort=symbol&amp;asc=1&amp;node=hs_a</Url>
+					<ResponseClass>org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject</ResponseClass>
+					<ParserClass></ParserClass>
+					<ResponseType>json</ResponseType>
 				</SubInfosource>
 			</SubInfosources>
 		</Infosource>

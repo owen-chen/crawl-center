@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.archmage.cc.crawl.container.AbstractContainer;
-import org.archmage.cc.infosource.bean.RequestObject;
+import org.archmage.cc.infosource.dto.request.RequestObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

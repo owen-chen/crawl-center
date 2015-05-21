@@ -6,7 +6,7 @@
 
 package org.archmage.cc.crawl.driver;
 
-import org.archmage.cc.infosource.bean.ResponseObject;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 
 /**
  * crawl driver
