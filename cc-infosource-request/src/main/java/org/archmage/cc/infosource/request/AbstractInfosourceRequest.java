@@ -16,16 +16,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.archmage.cc.common.util.constants.ConstantsInterface;
 import org.archmage.cc.common.util.http.GetMethodGenerator;
 import org.archmage.cc.common.util.http.HttpclientGenerator;
@@ -241,6 +244,9 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
         try {
             response = doRequest(url, subInfosource.getTimeout(), repeated);
         }
+        catch (HttpException e) {
+            throw new InfosourceErrorException(InfosourceErrorCode.REQUEST_IS_EXCEPTION);
+        }
         catch (IOException e) {
             throw new InfosourceErrorException(InfosourceErrorCode.REQUEST_IS_EXCEPTION);
         }
@@ -330,25 +336,26 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
         }
 
         // read data from remote
-        HttpClient httpClient = HttpclientGenerator.generate();
-
-        HttpMethodBase method = null;
+        CloseableHttpClient httpClient = null;
         try {
-            method = generateHttpMethod(url, timeout);
+            httpClient = HttpclientGenerator.generate(timeout);
+            HttpGet method = generateHttpMethod(url);
+
+            URI uri = URI.create(url);
+            HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
 
             int repeatCount = 0;
             // repeat twice
             int maxRepeatCount = repeated ? 2 : 0;
             while (repeatCount <= maxRepeatCount) {
+                CloseableHttpResponse httpresponse = null;
                 try {
-                    int statusCode = httpClient.executeMethod(method);
+                    httpresponse = httpClient.execute(host, method);
 
-                    if (statusCode >= 200 && statusCode < 300) {
-                        InputStream inputStream = method.getResponseBodyAsStream();
-
-                        StringWriter writer = new StringWriter();
-                        IOUtils.copy(inputStream, writer, obtainReadStreamCharset());
-                        String result = writer.toString();
+                    StatusLine statusLine = httpresponse.getStatusLine();
+                    int statuscode = statusLine.getStatusCode();
+                    if (statuscode >= 200 && statuscode < 300) {
+                        String result = IOUtils.toString(httpresponse.getEntity().getContent(), "UTF-8");
 
                         try {
                             validateResponseBody(url, result);
@@ -375,38 +382,31 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
                         throw new InfosourceErrorException(InfosourceErrorCode.REQUEST_IS_TIMEOUT_EXCEPTION);
                     }
                 }
+                finally {
+                    IOUtils.closeQuietly(httpresponse);
+                }
 
                 repeatCount++;
             }
         }
         finally {
-            if (method != null) {
-                method.releaseConnection();
-            }
+            IOUtils.closeQuietly(httpClient);
         }
 
         throw new InfosourceErrorException(InfosourceErrorCode.REQUEST_IS_EXCEPTION);
     }
 
     /**
-     * {@link GetMethod} generator
+     * {@link HttpGet} generator
      * <p>
      * 
      * @param url
      *            url
-     * @param timeout
-     *            timeout
-     * @return {@link HttpMethodBase}
+     * @return {@link HttpGet}
      * @throws InfosourceErrorException
      */
-    protected HttpMethodBase generateHttpMethod(String url, int timeout) throws InfosourceErrorException {
-        GetMethod getMethod = null;
-        if (timeout <= 0) {
-            getMethod = GetMethodGenerator.generate(url);
-        }
-        else {
-            getMethod = GetMethodGenerator.generate(url, timeout);
-        }
+    protected HttpGet generateHttpMethod(String url) throws InfosourceErrorException {
+        HttpGet getMethod = GetMethodGenerator.generate(url);
 
         httpHeadProcess(getMethod);
 
@@ -440,9 +440,9 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
      * <p>
      * 
      * @param getMethod
-     *            {@link GetMethod}
+     *            {@link HttpGet}
      */
-    protected void httpHeadProcess(GetMethod getMethod) {
+    protected void httpHeadProcess(HttpGet getMethod) {
         // empty
     }
 

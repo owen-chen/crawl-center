@@ -51,12 +51,13 @@ public class CrawlStatus {
      * @param threadPoolSize
      *            threadPoolSize
      */
-    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize) {
+    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize, long timeout) {
         super();
         this.code = code;
         this.runnable = runnable;
         this.status = status;
         this.threadPoolSize = threadPoolSize;
+        this.timeout = timeout;
     }
 
     /**

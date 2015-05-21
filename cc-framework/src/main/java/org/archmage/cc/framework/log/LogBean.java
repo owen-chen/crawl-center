@@ -18,9 +18,6 @@ import java.util.List;
  * @date : 2013-9-17
  */
 public class LogBean {
-    /** address */
-    private String address;
-
     /** mashine IP */
     private String machine;
 
@@ -65,11 +62,9 @@ public class LogBean {
      * @param createdTime
      * @param innerLogList
      */
-    public LogBean(String errorMessage, String address, String machine, Date startTime, Date endTime, Long elapsedTime, Integer errorCode, Date createdTime,
-                   List<InnerLog> innerLogList) {
+    public LogBean(String errorMessage, String machine, Date startTime, Date endTime, Long elapsedTime, Integer errorCode, Date createdTime, List<InnerLog> innerLogList) {
         super();
         this.errorMessage = errorMessage;
-        this.address = address;
         this.machine = machine;
         this.starttime = startTime;
         this.endtime = endTime;
@@ -77,27 +72,6 @@ public class LogBean {
         this.errorCode = errorCode;
         this.createdtime = createdTime;
         this.inner = innerLogList;
-    }
-
-    /**
-     * getter method
-     * 
-     * @see LogBean#address
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see LogBean#address
-     * @param address
-     *            the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
@@ -270,7 +244,7 @@ public class LogBean {
 
     @Override
     public String toString() {
-        return "LogBean [address=" + address + ", machine=" + machine + ", starttime=" + starttime + ", endtime=" + endtime + ", elapsedTime=" + elapsedTime + ", errorCode="
-               + errorCode + ", errorMessage=" + errorMessage + ", createdtime=" + createdtime + ", inner=" + inner + "]";
+        return "LogBean [machine=" + machine + ", starttime=" + starttime + ", endtime=" + endtime + ", elapsedTime=" + elapsedTime + ", errorCode=" + errorCode
+               + ", errorMessage=" + errorMessage + ", createdtime=" + createdtime + ", inner=" + inner + "]";
     }
 }

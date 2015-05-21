@@ -29,7 +29,6 @@
 		<ResponseObject>
 			<Enabled>true</Enabled>
 		</ResponseObject>
-		<Address>${Log.Address}</Address>
 		<Machine>${Log.Machine}</Machine>
 	</Log>
 

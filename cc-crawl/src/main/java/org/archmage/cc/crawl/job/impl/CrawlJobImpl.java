@@ -8,6 +8,7 @@ package org.archmage.cc.crawl.job.impl;
 
 import org.archmage.cc.configuration.XmlConfiguration;
 import org.archmage.cc.crawl.job.CrawlJob;
+import org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,18 @@ public class CrawlJobImpl implements CrawlJob {
 
     /** sysconfig */
     private XmlConfiguration sysconfig;
+
+    /** {@link SinaStockCrawlManager} */
+    private SinaStockCrawlManager sinaStockCrawlManager;
+
+    @Override
+    public void crawlSinaStockJob() {
+        if (isTestEnvironment()) {
+            return;
+        }
+
+        sinaStockCrawlManager.crawl();
+    }
 
     /**
      * 判断是否是单元测试环境
@@ -50,5 +63,16 @@ public class CrawlJobImpl implements CrawlJob {
      */
     public void setSysconfig(XmlConfiguration sysconfig) {
         this.sysconfig = sysconfig;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see CrawlJobImpl#sinaStockCrawlManager
+     * @param sinaStockCrawlManager
+     *            the sinaStockCrawlManager to set
+     */
+    public void setSinaStockCrawlManager(SinaStockCrawlManager sinaStockCrawlManager) {
+        this.sinaStockCrawlManager = sinaStockCrawlManager;
     }
 }

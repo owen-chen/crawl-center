@@ -45,7 +45,6 @@ public abstract class AbstractCrawlManager implements CrawlManager {
     @Override
     public void crawl() {
         CrawlJobLogBean crawlJobLogBean = (CrawlJobLogBean) getLogContainer().initializeLogBean(Thread.currentThread().getId(), new CrawlJobLogBean());
-        crawlJobLogBean.setAddress(getSysconfig().getString("Log.Address"));
         crawlJobLogBean.setMachine(getSysconfig().getString("Log.Machine"));
         crawlJobLogBean.setStarttime(new Date(System.currentTimeMillis()));
         crawlJobLogBean.setCreatedtime(new Date(System.currentTimeMillis()));

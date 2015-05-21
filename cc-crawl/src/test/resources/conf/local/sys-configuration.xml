@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Database>
+		<MongoDB>
+			<Ip>localhost</Ip>
+			<Port>27001</Port>
+			<DatabaseName>crawl-center-test</DatabaseName>
+			<AdminDatabaseName>admin</AdminDatabaseName>
+		</MongoDB>
+	</Database>
+
+	<Executor>
+		<NumThreads>20</NumThreads>
+		<MaxQueueSize>20</MaxQueueSize>
+	</Executor>
+
+	<Crawl>
+		<SleepingTime>1000</SleepingTime>
+	</Crawl>
+
+	<Collector>
+		<BackupEndName>.bak</BackupEndName>
+		<Threshold>0.9</Threshold>
+	</Collector>
+
+	<Log>
+		<ResponseObject>
+			<Enabled>true</Enabled>
+		</ResponseObject>
+		<Machine>machine</Machine>
+	</Log>
+
+	<IsTestEnvironment>false</IsTestEnvironment>
+</Root>

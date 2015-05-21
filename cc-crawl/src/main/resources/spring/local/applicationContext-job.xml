@@ -15,7 +15,7 @@
 	</bean>
 	<bean id="sinaStockCrawlTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="sinaStockCrawlJob" />
-		<property name="cronExpression" value="0 0/1 9-15 ? * MON-FRI" />
+		<property name="cronExpression" value="0 0 6 ? * MON-FRI" />
 	</bean>
 
 	<!-- test -->
@@ -30,9 +30,9 @@
 			<list>
 				<!--
 					<ref bean="sinaStockCrawlTrigger" /> 
-
-					<ref bean="test" />
 					-->
+
+				<ref bean="test" />
 			</list>
 		</property>
 	</bean>

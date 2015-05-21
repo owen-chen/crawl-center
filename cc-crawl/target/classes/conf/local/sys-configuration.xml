@@ -3,10 +3,10 @@
 	<Database>
 		<MongoDB>
 			<Ip>localhost</Ip>
-			<Port>27017</Port>
+			<Port>27001</Port>
 			<Username>${Maven.MongoDB.Username}</Username>
 			<Password>${Maven.MongoDB.Password}</Password>
-			<DatabaseName>crawl</DatabaseName>
+			<DatabaseName>crawl-center</DatabaseName>
 			<AdminDatabaseName>admin</AdminDatabaseName>
 		</MongoDB>
 	</Database>
@@ -29,8 +29,7 @@
 		<ResponseObject>
 			<Enabled>true</Enabled>
 		</ResponseObject>
-		<Address>${Log.Address}</Address>
-		<Machine>${Log.Machine}</Machine>
+		<Machine>localhost</Machine>
 	</Log>
 
 	<IsTestEnvironment>false</IsTestEnvironment>
