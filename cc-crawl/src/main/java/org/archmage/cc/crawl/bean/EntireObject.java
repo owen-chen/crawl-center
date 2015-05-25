@@ -6,8 +6,8 @@
 
 package org.archmage.cc.crawl.bean;
 
-import org.archmage.cc.infosource.bean.RequestObject;
-import org.archmage.cc.infosource.bean.ResponseObject;
+import org.archmage.cc.infosource.dto.request.RequestObject;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 
 /**
  * including {@link ResponseObject} and {@link RequestObject}

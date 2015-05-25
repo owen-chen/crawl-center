@@ -9,8 +9,8 @@ package org.archmage.cc.crawl.bean.log;
 import java.util.Date;
 
 import org.archmage.cc.framework.log.InnerLog;
-import org.archmage.cc.infosource.bean.RequestObject;
-import org.archmage.cc.infosource.bean.ResponseObject;
+import org.archmage.cc.infosource.dto.request.RequestObject;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 
 /**
  * crawl inner log

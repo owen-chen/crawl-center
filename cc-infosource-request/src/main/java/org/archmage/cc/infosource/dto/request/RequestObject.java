@@ -4,7 +4,7 @@
  * File Name      : RequestObject.java
  */
 
-package org.archmage.cc.infosource.bean;
+package org.archmage.cc.infosource.dto.request;
 
 /**
  * request object
@@ -16,6 +16,23 @@ package org.archmage.cc.infosource.bean;
 public class RequestObject {
     /** infosource code */
     private String code;
+
+    /**
+     * constructor
+     */
+    public RequestObject() {
+        super();
+    }
+
+    /**
+     * constructor
+     * 
+     * @param code
+     */
+    public RequestObject(String code) {
+        super();
+        this.code = code;
+    }
 
     /**
      * getter method

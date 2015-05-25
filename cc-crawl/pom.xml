@@ -19,6 +19,12 @@
 
 		<dependency>
 			<groupId>org.archmage.cc</groupId>
+			<artifactId>cc-model</artifactId>
+			<version>${cc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.archmage.cc</groupId>
 			<artifactId>cc-infosource-request</artifactId>
 			<version>${cc.version}</version>
 		</dependency>
@@ -55,7 +61,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.14.10</version>
+			<version>6.9.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

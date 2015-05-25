@@ -3,11 +3,11 @@
 	<Crawl>
 		<Targets>
 			<Target>
-				<Code>15002</Code>
+				<Code>10001</Code>
 				<Runnable>true</Runnable>
 				<Class>org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager</Class>
-				<ThreadPoolSize>100</ThreadPoolSize>
-				<Timeout>45</Timeout>
+				<ThreadPoolSize>5</ThreadPoolSize>
+				<Timeout title='time unit is second'>100</Timeout>
 			</Target>
 		</Targets>
 	</Crawl>

@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.archmage.cc.crawl.container.AbstractContainer;
-import org.archmage.cc.infosource.bean.RequestObject;
+import org.archmage.cc.infosource.dto.request.RequestObject;
 
 /**
  * seed container

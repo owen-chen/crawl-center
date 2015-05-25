@@ -51,12 +51,13 @@ public class CrawlStatus {
      * @param threadPoolSize
      *            threadPoolSize
      */
-    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize) {
+    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize, long timeout) {
         super();
         this.code = code;
         this.runnable = runnable;
         this.status = status;
         this.threadPoolSize = threadPoolSize;
+        this.timeout = timeout;
     }
 
     /**
@@ -83,13 +84,13 @@ public class CrawlStatus {
          * finished: all of todo urls has been crawled and website's contents
          * has been parsed
          */
-        public static final int FINISHED = 4;
+        public static final int FINISHED = 5;
 
         /** data_collecor: collecting data */
-        public static final int DATA_COLLECTOR = 5;
+        public static final int DATA_COLLECTOR = 4;
 
         /** data_collecor: failed to collecting data */
-        public static final int DATA_COLLECTOR_FAILURE = -5;
+        public static final int DATA_COLLECTOR_FAILURE = -4;
     }
 
     /**

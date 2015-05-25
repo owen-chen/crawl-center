@@ -8,8 +8,8 @@ package org.archmage.cc.infosource.factory;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.archmage.cc.infosource.bean.RequestObject;
-import org.archmage.cc.infosource.bean.ResponseObject;
+import org.archmage.cc.infosource.dto.request.RequestObject;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 
 /**
  * factory interface

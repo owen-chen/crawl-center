@@ -4,7 +4,7 @@
 
 	<bean id="daoSupport" class="org.archmage.cc.crawl.daosupport.ExtendedDaoSupport">
 		<property name="mongoTemplate" ref="mongoTemplate" />
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
 		<property name="resourceLoader" ref="resourceLoader" />
 	</bean>
 </beans>

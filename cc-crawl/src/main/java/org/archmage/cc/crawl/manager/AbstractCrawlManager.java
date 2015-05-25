@@ -21,12 +21,13 @@ import org.archmage.cc.crawl.bean.log.CrawlJobLogBean;
 import org.archmage.cc.crawl.bean.log.CrawlTaskLogBean;
 import org.archmage.cc.crawl.collector.manager.CollectorManager;
 import org.archmage.cc.crawl.driver.CrawlDriver;
+import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.crawl.model.CrawlStatus;
 import org.archmage.cc.crawl.reader.CrawlConfigReader;
 import org.archmage.cc.framework.log.InnerLog;
 import org.archmage.cc.framework.log.LogContainer;
-import org.archmage.cc.infosource.bean.ResponseObject;
 import org.archmage.cc.infosource.bean.SubInfosourceRequestInnerLog;
+import org.archmage.cc.infosource.dto.response.ResponseObject;
 import org.slf4j.Logger;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -45,10 +46,9 @@ public abstract class AbstractCrawlManager implements CrawlManager {
     @Override
     public void crawl() {
         CrawlJobLogBean crawlJobLogBean = (CrawlJobLogBean) getLogContainer().initializeLogBean(Thread.currentThread().getId(), new CrawlJobLogBean());
-        crawlJobLogBean.setAddress(getSysconfig().getString("Log.Address"));
         crawlJobLogBean.setMachine(getSysconfig().getString("Log.Machine"));
-        crawlJobLogBean.setStarttime(new Date(System.currentTimeMillis()));
-        crawlJobLogBean.setCreatedtime(new Date(System.currentTimeMillis()));
+        crawlJobLogBean.setStartTime(new Date(System.currentTimeMillis()));
+        crawlJobLogBean.setCreatedTime(new Date(System.currentTimeMillis()));
 
         try {
             // 1.retrieveCrawlConfig
@@ -57,14 +57,10 @@ public abstract class AbstractCrawlManager implements CrawlManager {
             CrawlStatus crawlStatus = getCrawlConfigReader().retrieveCertainCrawlConfig(className);
             crawlJobLogBean.setCrawlStatus(crawlStatus);
             if (crawlStatus == null) {
-                crawlJobLogBean.setErrorCode(ErrorCode.NO_CRAWL_STATUS.getValue());
-
-                return;
+                throw new CrawlErrorException(ErrorCode.NO_CRAWL_STATUS);
             }
             else if (!crawlStatus.getRunnable()) {
-                crawlJobLogBean.setErrorCode(ErrorCode.UNRUNNABLE_CRAWL.getValue());
-
-                return;
+                throw new CrawlErrorException(ErrorCode.UNRUNNABLE_CRAWL);
             }
 
             // 2.save started status of this job to db
@@ -73,21 +69,10 @@ public abstract class AbstractCrawlManager implements CrawlManager {
 
             // 3.obtain todo requests
             CrawlDriver<?> crawlDriver = getCrawlDriver();
-            int todoSize = 0;
-            try {
-                long startTime = System.currentTimeMillis();
-                todoSize = crawlDriver.obtainTodoRequest();
-                crawlJobLogBean.setObtainTodoRequestElapsedTime(System.currentTimeMillis() - startTime);
-                crawlJobLogBean.setTodoSize(todoSize);
-            }
-            catch (Exception e) {
-                getLOGGER().error(ExceptionUtils.getStackTrace(e));
-
-                crawlStatus.setStatus(CrawlStatus.Status.CRAWLING_FAILURE);
-                saveCrawlStatus(crawlStatus);
-
-                return;
-            }
+            long startTime = System.currentTimeMillis();
+            int todoSize = crawlDriver.obtainTodoRequest();
+            crawlJobLogBean.setObtainTodoRequestElapsedTime(System.currentTimeMillis() - startTime);
+            crawlJobLogBean.setTodoSize(todoSize);
 
             String crawlCode = crawlStatus.getCode();
             crawlStatus.setStatus(CrawlStatus.Status.CRAWLING);
@@ -109,7 +94,7 @@ public abstract class AbstractCrawlManager implements CrawlManager {
             getLOGGER().info("{} threads have been proceeding to capture {}, todo: {}", new Object[] { threadPoolSize, crawlCode, todoSize });
 
             // 5.estimate whether or not finished
-            long startTime = System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
             while (true) {
                 long crawlStartTime = System.currentTimeMillis();
                 try {
@@ -129,30 +114,25 @@ public abstract class AbstractCrawlManager implements CrawlManager {
                     crawlStatus.setStatus(CrawlStatus.Status.DATA_COLLECTOR);
                     saveCrawlStatus(crawlStatus);
 
-                    boolean successful = false;
-                    try {
-                        getCollectorManager().collect();
-                        successful = true;
-                    }
-                    catch (Exception e) {
-                        // XXX error code
-                        crawlJobLogBean.setErrorMessage(ExceptionUtils.getFullStackTrace(e));
-                        crawlStatus.setStatus(CrawlStatus.Status.DATA_COLLECTOR_FAILURE);
-                        saveCrawlStatus(crawlStatus);
-                    }
+                    getCollectorManager().collect();
 
-                    if (successful) {
-                        crawlStatus.setStatus(CrawlStatus.Status.FINISHED);
-                        saveCrawlStatus(crawlStatus);
-                    }
+                    crawlStatus.setStatus(CrawlStatus.Status.FINISHED);
+                    saveCrawlStatus(crawlStatus);
 
                     break;
                 }
             }
         }
+        catch (CrawlErrorException e) {
+            crawlJobLogBean.setErrorCode(e.getErrorCode().getValue());
+
+            CrawlStatus crawlStatus = crawlJobLogBean.getCrawlStatus();
+            crawlStatus.setStatus(CrawlStatus.Status.CRAWLING_FAILURE);
+            saveCrawlStatus(crawlStatus);
+        }
         finally {
-            crawlJobLogBean.setEndtime(new Date(System.currentTimeMillis()));
-            crawlJobLogBean.setElapsedTime(crawlJobLogBean.getEndtime().getTime() - crawlJobLogBean.getStarttime().getTime());
+            crawlJobLogBean.setEndTime(new Date(System.currentTimeMillis()));
+            crawlJobLogBean.setElapsedTime(crawlJobLogBean.getEndTime().getTime() - crawlJobLogBean.getStartTime().getTime());
 
             try {
                 // 去除parseResult，防止爬虫日志输出过多
@@ -181,7 +161,7 @@ public abstract class AbstractCrawlManager implements CrawlManager {
                 getLOGGER().error(ExceptionUtils.getStackTrace(e));
             }
 
-            if (getSysconfig().getBoolean("Log.ResponseObject.Enabled")) {
+            if (getSysconfig().getBoolean("Log.ShowResponseObject.Enabled")) {
                 getLOGGER().info(TextUtils.removeLineBreak(crawlJobLogBean.toString()));
             }
 

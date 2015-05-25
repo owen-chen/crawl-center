@@ -34,6 +34,9 @@ public class SubInfosource {
     /** the timeout while requesting, timeunit is ms */
     private int timeout;
 
+    /** the charset of response */
+    private String responseCharset;
+
     /**
      * constructor
      */
@@ -56,8 +59,10 @@ public class SubInfosource {
      *            {@link Parser}
      * @param timeout
      *            timeout
+     * @param responseCharset
+     *            responseCharset
      */
-    public SubInfosource(String name, String url, Class<?> responseClass, String responseType, Parser<?> parser, int timeout) {
+    public SubInfosource(String name, String url, Class<?> responseClass, String responseType, Parser<?> parser, int timeout, String responseCharset) {
         super();
         this.name = name;
         this.url = url;
@@ -65,6 +70,7 @@ public class SubInfosource {
         this.responseType = responseType;
         this.parser = parser;
         this.timeout = timeout;
+        this.responseCharset = responseCharset;
     }
 
     /**
@@ -196,6 +202,27 @@ public class SubInfosource {
     @Override
     public String toString() {
         return "SubInfosource [name=" + name + ", url=" + url + ", responseClass=" + responseClass + ", responseType=" + responseType + ", parser=" + parser + ", timeout="
-               + timeout + "]";
+               + timeout + ", responseCharset=" + responseCharset + "]";
+    }
+
+    /**
+     * getter method
+     * 
+     * @see SubInfosource#responseCharset
+     * @return the responseCharset
+     */
+    public String getResponseCharset() {
+        return responseCharset;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see SubInfosource#responseCharset
+     * @param responseCharset
+     *            the responseCharset to set
+     */
+    public void setResponseCharset(String responseCharset) {
+        this.responseCharset = responseCharset;
     }
 }

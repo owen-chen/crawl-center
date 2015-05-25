@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
 	<Database>
+		<DB>
+			<DriverClass>${Maven.Database.DB.DriverClass}</DriverClass>
+			<ConnectionStr>${Maven.Database.DB.ConnectionStr}</ConnectionStr>
+			<Username>${Maven.Database.DB.Username}</Username>
+			<Password>${Maven.Database.DB.Password}</Password>
+		</DB>
 		<MongoDB>
 			<Ip>${Maven.MongoDB.Ip}</Ip>
 			<Port>${Maven.MongoDB.Port}</Port>
@@ -22,14 +28,13 @@
 
 	<Collector>
 		<BackupEndName>.bak</BackupEndName>
-		<Threshold>0.9</Threshold>
+		<Threshold>1</Threshold>
 	</Collector>
 
 	<Log>
-		<ResponseObject>
+		<ShowResponseObject>
 			<Enabled>true</Enabled>
-		</ResponseObject>
-		<Address>${Log.Address}</Address>
+		</ShowResponseObject>
 		<Machine>${Log.Machine}</Machine>
 	</Log>
 

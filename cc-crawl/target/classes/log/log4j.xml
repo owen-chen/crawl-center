@@ -9,9 +9,9 @@
 	</appender>
 
 	<appender name="FILE" class="org.apache.log4j.rolling.RollingFileAppender">
-		<param name="File" value="/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log" />
+		<param name="File" value="/disk1/log/applogs/org/archmage/cc/crawl/cc-crawl.log" />
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log.%d{yyyy-MM-dd}.zip" />
+			<param name="FileNamePattern" value="/disk1/log/applogs/org/archmage/cc/crawl/cc-crawl.log.%d{yyyy-MM-dd}.zip" />
 		</rollingPolicy>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%t] %p - %m {%F %M()-%L}%n" />

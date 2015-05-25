@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
 	<Infosources>
+		<Infosource>
+			<Code>10001</Code>
+			<Name>test sina stock info</Name>
+			<RequestHandlerClass>org.archmage.cc.infosource.request.stock.SinaStockInfosourceRequest</RequestHandlerClass>
+			<ResponseClass>org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject</ResponseClass>
+			<SubInfosources>
+				<SubInfosource>
+					<Name>test.stock.sina</Name>
+					<Url>http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&amp;num=10000&amp;sort=symbol&amp;asc=1&amp;node=hs_a</Url>
+					<ResponseClass>org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject</ResponseClass>
+					<ParserClass></ParserClass>
+					<ResponseType>json</ResponseType>
+					<Timeout>30</Timeout>
+					<ResponseCharset>GB2312</ResponseCharset>
+				</SubInfosource>
+			</SubInfosources>
+		</Infosource>
 	</Infosources>
 </Root>

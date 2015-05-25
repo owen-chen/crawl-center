@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Database>
+		<DB>
+			<DriverClass>com.mysql.jdbc.Driver</DriverClass>
+			<ConnectionStr>jdbc:mysql://localhost:3306/crawl-center-test?characterEncoding=UTF8</ConnectionStr>
+			<Username>root</Username>
+			<Password>root</Password>
+		</DB>
+		<MongoDB>
+			<Ip>localhost</Ip>
+			<Port>27001</Port>
+			<DatabaseName>crawl-center-test</DatabaseName>
+			<AdminDatabaseName>admin</AdminDatabaseName>
+		</MongoDB>
+	</Database>
+
+	<Executor>
+		<NumThreads>20</NumThreads>
+		<MaxQueueSize>20</MaxQueueSize>
+	</Executor>
+
+	<Crawl>
+		<SleepingTime>1000</SleepingTime>
+	</Crawl>
+
+	<Collector>
+		<BackupEndName>.bak</BackupEndName>
+		<Threshold>1</Threshold>
+	</Collector>
+
+	<Log>
+		<ResponseObject>
+			<Enabled>true</Enabled>
+		</ResponseObject>
+		<Machine>machine</Machine>
+	</Log>
+
+	<IsTestEnvironment>true</IsTestEnvironment>
+</Root>

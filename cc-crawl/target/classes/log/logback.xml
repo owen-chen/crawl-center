@@ -11,10 +11,10 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log</File>
+		<File>/disk1/log/applogs/org/archmage/cc/crawl/cc-crawl.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>
-				/disk1/data/applogs/org/archmage/cc/crawl/cc-crawl.log.%d{yyyy-MM-dd}.zip
+				/disk1/log/applogs/org/archmage/cc/crawl/cc-crawl.log.%d{yyyy-MM-dd}.zip
 			</FileNamePattern>
 		</rollingPolicy>
 

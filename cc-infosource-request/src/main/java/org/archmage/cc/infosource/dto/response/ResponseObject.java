@@ -4,7 +4,7 @@
  * File Name      : ResponseObject.java
  */
 
-package org.archmage.cc.infosource.bean;
+package org.archmage.cc.infosource.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;

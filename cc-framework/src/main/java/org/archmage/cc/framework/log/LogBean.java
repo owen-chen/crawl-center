@@ -18,17 +18,14 @@ import java.util.List;
  * @date : 2013-9-17
  */
 public class LogBean {
-    /** address */
-    private String address;
-
     /** mashine IP */
     private String machine;
 
     /** start time（ms） */
-    private Date starttime;
+    private Date startTime;
 
     /** end time（ms） */
-    private Date endtime;
+    private Date endTime;
 
     /** elapsed time(ms) */
     private Long elapsedTime;
@@ -40,7 +37,7 @@ public class LogBean {
     private String errorMessage;
 
     /** created time */
-    private Date createdtime;
+    private Date createdTime;
 
     /** {@link InnerLog} list */
     private List<InnerLog> inner = new ArrayList<InnerLog>();
@@ -65,39 +62,16 @@ public class LogBean {
      * @param createdTime
      * @param innerLogList
      */
-    public LogBean(String errorMessage, String address, String machine, Date startTime, Date endTime, Long elapsedTime, Integer errorCode, Date createdTime,
-                   List<InnerLog> innerLogList) {
+    public LogBean(String errorMessage, String machine, Date startTime, Date endTime, Long elapsedTime, Integer errorCode, Date createdTime, List<InnerLog> innerLogList) {
         super();
         this.errorMessage = errorMessage;
-        this.address = address;
         this.machine = machine;
-        this.starttime = startTime;
-        this.endtime = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.elapsedTime = elapsedTime;
         this.errorCode = errorCode;
-        this.createdtime = createdTime;
+        this.createdTime = createdTime;
         this.inner = innerLogList;
-    }
-
-    /**
-     * getter method
-     * 
-     * @see LogBean#address
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see LogBean#address
-     * @param address
-     *            the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
@@ -119,48 +93,6 @@ public class LogBean {
      */
     public void setMachine(String machine) {
         this.machine = machine;
-    }
-
-    /**
-     * getter method
-     * 
-     * @see LogBean#starttime
-     * @return the starttime
-     */
-    public Date getStarttime() {
-        return starttime;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see LogBean#starttime
-     * @param starttime
-     *            the starttime to set
-     */
-    public void setStarttime(Date starttime) {
-        this.starttime = starttime;
-    }
-
-    /**
-     * getter method
-     * 
-     * @see LogBean#endtime
-     * @return the endtime
-     */
-    public Date getEndtime() {
-        return endtime;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see LogBean#endtime
-     * @param endtime
-     *            the endtime to set
-     */
-    public void setEndtime(Date endtime) {
-        this.endtime = endtime;
     }
 
     /**
@@ -208,27 +140,6 @@ public class LogBean {
     /**
      * getter method
      * 
-     * @see LogBean#createdtime
-     * @return the createdtime
-     */
-    public Date getCreatedtime() {
-        return createdtime;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see LogBean#createdtime
-     * @param createdtime
-     *            the createdtime to set
-     */
-    public void setCreatedtime(Date createdtime) {
-        this.createdtime = createdtime;
-    }
-
-    /**
-     * getter method
-     * 
      * @see LogBean#errorMessage
      * @return the errorMessage
      */
@@ -268,9 +179,72 @@ public class LogBean {
         this.elapsedTime = elapsedTime;
     }
 
+    /**
+     * getter method
+     * 
+     * @see LogBean#startTime
+     * @return the startTime
+     */
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see LogBean#startTime
+     * @param startTime
+     *            the startTime to set
+     */
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * getter method
+     * 
+     * @see LogBean#endTime
+     * @return the endTime
+     */
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see LogBean#endTime
+     * @param endTime
+     *            the endTime to set
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    /**
+     * getter method
+     * 
+     * @see LogBean#createdTime
+     * @return the createdTime
+     */
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see LogBean#createdTime
+     * @param createdTime
+     *            the createdTime to set
+     */
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
     @Override
     public String toString() {
-        return "LogBean [address=" + address + ", machine=" + machine + ", starttime=" + starttime + ", endtime=" + endtime + ", elapsedTime=" + elapsedTime + ", errorCode="
-               + errorCode + ", errorMessage=" + errorMessage + ", createdtime=" + createdtime + ", inner=" + inner + "]";
+        return "LogBean [machine=" + machine + ", startTime=" + startTime + ", endTime=" + endTime + ", elapsedTime=" + elapsedTime + ", errorCode=" + errorCode
+               + ", errorMessage=" + errorMessage + ", createdTime=" + createdTime + ", inner=" + inner + "]";
     }
 }

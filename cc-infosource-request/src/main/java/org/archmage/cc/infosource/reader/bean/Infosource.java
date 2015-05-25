@@ -53,7 +53,7 @@ public class Infosource {
      * @param subInfosourceList
      *            subInfosourceList
      */
-    public Infosource(String code, String name, Class<?> requestHandlerClass, Class<?> responseClass, List<SubInfosource> subInfosourceList, String primaryKeyPattern) {
+    public Infosource(String code, String name, Class<?> requestHandlerClass, Class<?> responseClass, List<SubInfosource> subInfosourceList) {
         super();
         this.code = code;
         this.name = name;

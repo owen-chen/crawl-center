@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
 	<Database>
+		<DB>
+			<DriverClass>com.mysql.jdbc.Driver</DriverClass>
+			<ConnectionStr>jdbc:mysql://localhost:3306/crawl-center?characterEncoding=UTF8</ConnectionStr>
+			<Username>root</Username>
+			<Password>root</Password>
+		</DB>
 		<MongoDB>
 			<Ip>localhost</Ip>
-			<Port>27017</Port>
+			<Port>27001</Port>
 			<Username>${Maven.MongoDB.Username}</Username>
 			<Password>${Maven.MongoDB.Password}</Password>
-			<DatabaseName>crawl</DatabaseName>
+			<DatabaseName>crawl-center</DatabaseName>
 			<AdminDatabaseName>admin</AdminDatabaseName>
 		</MongoDB>
 	</Database>
@@ -22,15 +28,14 @@
 
 	<Collector>
 		<BackupEndName>.bak</BackupEndName>
-		<Threshold>0.9</Threshold>
+		<Threshold>1</Threshold>
 	</Collector>
 
 	<Log>
-		<ResponseObject>
+		<ShowResponseObject>
 			<Enabled>true</Enabled>
-		</ResponseObject>
-		<Address>${Log.Address}</Address>
-		<Machine>${Log.Machine}</Machine>
+		</ShowResponseObject>
+		<Machine>localhost</Machine>
 	</Log>
 
 	<IsTestEnvironment>false</IsTestEnvironment>

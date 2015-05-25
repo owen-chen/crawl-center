@@ -6,8 +6,10 @@
 
 package org.archmage.cc.common.util.http;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.params.HttpClientParams;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 
 /**
  * {@link Httpclient} generator
@@ -17,23 +19,36 @@ import org.apache.commons.httpclient.params.HttpClientParams;
  * @date : 2013-8-19
  */
 public class HttpclientGenerator {
-    /** default charset */
-    private static final String DEFAULT_CHARSET = "GB2312";
+    /** default time out is 10 seconds */
+    private static final int DEFAULT_TIME_OUT = 100000;
 
     /**
      * generator
      * <p>
      * 
      * @author chen.chen.9, 2013-8-19
-     * @return {@link Httpclient}
+     * @return {@link CloseableHttpClient}
      */
-    public static HttpClient generate() {
-        HttpClient httpClient = new HttpClient();
+    public static CloseableHttpClient generate() {
+        return generate(DEFAULT_TIME_OUT);
+    }
 
-        HttpClientParams params = httpClient.getParams();
-        params.setContentCharset(DEFAULT_CHARSET);
-        httpClient.setParams(params);
-
-        return httpClient;
+    /**
+     * generator
+     * <p>
+     * 
+     * @author chen.chen.9, 2013-8-19
+     * @param timeout
+     *            time out
+     * @return {@link CloseableHttpClient}
+     */
+    public static CloseableHttpClient generate(int timeout) {
+        if (timeout <= 0) {
+            timeout = DEFAULT_TIME_OUT;
+        }
+        
+        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(timeout).setSocketTimeout(timeout).setConnectTimeout(timeout).build();
+        HttpClientBuilder httpClientBuilder = HttpClients.custom().setDefaultRequestConfig(requestConfig);
+        return httpClientBuilder.build();
     }
 }
