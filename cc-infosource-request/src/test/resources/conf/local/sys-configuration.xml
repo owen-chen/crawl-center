@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+	<Database title="数据库连接配置">
+		<DB>
+			<DriverClass>com.mysql.jdbc.Driver</DriverClass>
+			<ConnectionStr>jdbc:mysql://localhost:3306/crawl-center-test?characterEncoding=UTF8</ConnectionStr>
+			<Username>root</Username>
+			<Password>root</Password>
+		</DB>
+	</Database>
+</Root>

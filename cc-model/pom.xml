@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>cc-model</artifactId>
+
+	<parent>
+		<groupId>org.archmage.cc</groupId>
+		<artifactId>crawl-center-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<xdoclet.dest>src/main/resources/hibernate</xdoclet.dest>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.6.5.Final</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jahia</id>
+			<url>http://maven.jahia.org/maven2/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xdoclet-maven-plugin</artifactId>
+				<version>1.0</version>
+				<!-- 增加下面2个dependency，xdoclet就不會因為使用到 JDK1.5 的泛型功能時抛出error了 -->
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant</artifactId>
+						<version>1.7.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.7.0</version>
+					</dependency>
+					<!-- xjavadoc 1.5在maven标准库中没有提供，需要加上jahia pluginRepository -->
+					<dependency>
+						<groupId>xdoclet</groupId>
+						<artifactId>xjavadoc</artifactId>
+						<version>1.5-snapshot050611</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xdoclet</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<mkdir dir="${xdoclet.dest}/hbm" />
+								<!-- generate hibernate mappings xml automatically -->
+								<hibernatedoclet encoding="utf-8" excludedTags="@version,@author,@todo,@see" destDir="${xdoclet.dest}/hbm" verbose="true">
+									<fileset dir="src/main/java">
+										<include name="org/archmage/cc/model/**/*.java" />
+									</fileset>
+									<hibernate version="3.0" />
+								</hibernatedoclet>
+								<!-- after hibernate 3.6, use namespace http://www.hibernate.org/dtd/ instead. so replace http://hibernate.sourceforge.net with http://www.hibernate.org/dtd/ from *.hbm.xml -->
+								<replaceregexp byline="true">
+									<regexp pattern="hibernate\.sourceforge\.net" />
+									<substitution expression="www.hibernate.org/dtd" />
+									<fileset dir="${xdoclet.dest}/hbm">
+										<include name="**/*.hbm.xml" />
+									</fileset>
+								</replaceregexp>
+								<!-- generate ddl named schema.sql automatically -->
+								<touch file="${xdoclet.dest}/ddl/schema.sql" mkdirs="true" />
+								<!-- classpath references: maven.compile.classpath maven.runtime.classpath maven.test.classpath maven.plugin.classpath -->
+								<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="maven.compile.classpath" />
+								<!-- quiet: do not output the script to stdout; drop: only drop the tables; text: do not export to the database; output: output the ddl script to a file; -->
+								<schemaexport quiet="yes" text="yes" drop="no" delimiter=";" output="${xdoclet.dest}/ddl/schema.sql" config="src/main/xdoclet/hibernate.cfg.xml">
+									<fileset dir="${xdoclet.dest}/hbm">
+										<include name="**/*.hbm.xml" />
+									</fileset>
+								</schemaexport>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<finalName>${project.artifactId}-${project.version}</finalName>
+	</build>
+</project>

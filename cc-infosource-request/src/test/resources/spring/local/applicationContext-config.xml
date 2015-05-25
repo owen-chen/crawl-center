@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="mockIsconfig" class="org.archmage.cc.configuration.XmlConfiguration" init-method="init">
+		<property name="resourceLoader" ref="resourceLoader" />
+		<constructor-arg value="classpath:infosource/test-infosource-config.xml" />
+	</bean>
+
+	<bean id="mockIsconfigReader" class="org.archmage.cc.infosource.reader.mock.MockInfosourceConfigReader" init-method="init">
+		<property name="mockIsconfig" ref="mockIsconfig" />
+	</bean>
+</beans>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="org.archmage.cc.model.stock.Stock"
+        table="stock"
+        lazy="false"
+        dynamic-update="true"
+        dynamic-insert="true"
+    >
+
+        <id
+            name="id"
+            column="id"
+            type="long"
+            unsaved-value="0"
+        >
+            <generator class="native">
+              <!--  
+                  To add non XDoclet generator parameters, create a file named 
+                  hibernate-generator-params-Stock.xml 
+                  containing the additional parameters and place it in your merge dir. 
+              --> 
+            </generator>
+        </id>
+
+        <property
+            name="name"
+            type="string"
+            update="true"
+            insert="true"
+            column="name"
+        />
+
+        <property
+            name="code"
+            type="string"
+            update="true"
+            insert="true"
+            column="code"
+        />
+
+        <property
+            name="symbol"
+            type="string"
+            update="true"
+            insert="true"
+            column="symbol"
+        />
+
+        <property
+            name="addTime"
+            type="long"
+            update="true"
+            insert="true"
+            column="addTime"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-Stock.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>
