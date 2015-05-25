@@ -55,8 +55,8 @@ public class SinaStockInfosourceRequestTest extends AbstractTestng {
 
     @DataProvider(name = "requestTest")
     public Object[][] dataProvider() {
-        return new Object[][] { { "10001", new SinaStockRequestObject(),
-                                 "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=1&num=10000&sort=symbol&asc=1&node=hs_a",
+        return new Object[][] { { "10001", new SinaStockRequestObject("10001", 2),
+                                 "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=2&num=1000&sort=symbol&asc=1&node=hs_a",
                                  new SinaStockResponseObject(Arrays.asList(new Result("sh603998", "603998", "方盛制药"), new Result("sh603997", "603997", "继峰股份"))) } };
     }
 }

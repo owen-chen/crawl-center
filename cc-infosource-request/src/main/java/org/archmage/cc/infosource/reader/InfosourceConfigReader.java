@@ -103,6 +103,7 @@ public class InfosourceConfigReader {
                 subInfosource.setName(getIsconfig().getString(xpath + "(" + j + ").Name"));
                 subInfosource.setUrl(getIsconfig().getString(xpath + "(" + j + ").Url"));
                 subInfosource.setResponseType(getIsconfig().getString(xpath + "(" + j + ").ResponseType"));
+                subInfosource.setResponseCharset(getIsconfig().getString(xpath + "(" + j + ").ResponseCharset"));
                 subInfosource.setTimeout(getIsconfig().getInt(xpath + "(" + j + ").Timeout") * 1000);
 
                 String parserClass = getIsconfig().getString(xpath + "(" + j + ").ParserClass");
@@ -124,9 +125,12 @@ public class InfosourceConfigReader {
                     subInfosource.setParser(new BaseParser<Object>());
                 }
 
-                String responseClassNmae = getIsconfig().getString(xpath + "(" + j + ").ResponseClass");
+                String responseClassName = getIsconfig().getString(xpath + "(" + j + ").ResponseClass");
+                if (StringUtils.isEmpty(responseClassName)) {
+                    responseClassName = responseClass;
+                }
                 try {
-                    subInfosource.setResponseClass(Class.forName(responseClassNmae));
+                    subInfosource.setResponseClass(Class.forName(responseClassName));
                 }
                 catch (ClassNotFoundException e) {
                     LOGGER.error(ExceptionUtils.getStackTrace(e));

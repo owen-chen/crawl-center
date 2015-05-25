@@ -17,7 +17,9 @@ import org.archmage.cc.crawl.AbstractTestng;
 import org.archmage.cc.crawl.driver.stock.SinaStockCrawlDriver;
 import org.archmage.cc.crawl.model.CrawlStatus;
 import org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject;
+import org.archmage.cc.model.stock.Stock;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -36,6 +38,9 @@ public class SinaStockCrawlManagerTest extends AbstractTestng {
     private MongoTemplate mongoTemplate;
 
     @Resource
+    private HibernateTemplate hibernateTemplate;
+
+    @Resource
     private XmlConfiguration sysconfig;
 
     @Resource
@@ -50,11 +55,13 @@ public class SinaStockCrawlManagerTest extends AbstractTestng {
         Assert.assertEquals(crawlStatusList.size(), 1);
 
         CrawlStatus actualCrawlStatus = crawlStatusList.get(0);
-        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaStockCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 1, 30 * 1000);
+        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaStockCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 5, 100 * 1000);
         expectedCrawlStatus.set_id(actualCrawlStatus.get_id());
         Assert.assertEquals(actualCrawlStatus.toString(), expectedCrawlStatus.toString());
 
         Assert.assertFalse(mongoTemplate.collectionExists(SinaStockResponseObject.class));
+        List<Stock> stockList = hibernateTemplate.loadAll(Stock.class);
+        Assert.assertTrue(CollectionUtils.isNotEmpty(stockList));
 
         Set<String> set = mongoTemplate.getCollectionNames();
         Assert.assertTrue(CollectionUtils.isNotEmpty(set));
@@ -88,5 +95,7 @@ public class SinaStockCrawlManagerTest extends AbstractTestng {
         }
 
         mongoTemplate.dropCollection(CrawlStatus.class);
+
+        hibernateTemplate.deleteAll(hibernateTemplate.loadAll(Stock.class));
     }
 }

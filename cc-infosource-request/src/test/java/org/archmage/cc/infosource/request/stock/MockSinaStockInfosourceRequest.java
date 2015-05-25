@@ -56,7 +56,7 @@ public class MockSinaStockInfosourceRequest extends SinaStockInfosourceRequest {
     }
 
     @Override
-    protected String doRequest(String url, int timeout, boolean repeatable) {
+    protected String doRequest(String url, int timeout, boolean repeatable, String charset) {
         Assert.assertEquals(url, expectedUrl);
 
         Resource resource = resourceLoader.getResource("classpath:response/stock/sina_stock.js");

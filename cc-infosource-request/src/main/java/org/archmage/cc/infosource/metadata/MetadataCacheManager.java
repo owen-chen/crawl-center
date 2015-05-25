@@ -44,7 +44,7 @@ public class MetadataCacheManager extends RefreshableCacheManager<String, Object
     @Override
     public Map<String, Object> readData() {
         if (CollectionUtils.isEmpty(loaderManagerList)) {
-            LOGGER.error("no loader manager found");
+            LOGGER.warn("no loader manager found");
 
             return null;
         }

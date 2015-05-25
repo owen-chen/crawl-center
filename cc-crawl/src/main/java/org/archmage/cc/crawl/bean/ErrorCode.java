@@ -21,7 +21,12 @@ public enum ErrorCode {
     NO_CRAWL_STATUS(200),
 
     /** the crawl could not be run */
-    UNRUNNABLE_CRAWL(201);
+    UNRUNNABLE_CRAWL(201),
+
+    /** two more stocks are found with the same symbol */
+    TWO_MORE_SIMILAR_STOCKS(1000),
+
+    TEMP_DATA_NOT_EXIST_IN_MONGODB(1001), SUCCESS_RATE_NOT_EXCEED_THRESHOLD(1002), RESPONSE_DATA_COULD_NOT_BE_EMPTY(1003);
 
     /** value */
     private int value;

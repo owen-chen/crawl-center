@@ -8,7 +8,7 @@ package org.archmage.cc.crawl.daosupport;
 
 import org.archmage.cc.common.resourceLoader.ResourceLoader;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * extended dao support
@@ -18,35 +18,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @date : 2013-9-22
  */
 public class ExtendedDaoSupport {
-    /** {@link JdbcTemplate} */
-    private JdbcTemplate jdbcTemplate;
+    /** {@link HibernateTemplate} */
+    private HibernateTemplate hibernateTemplate;
 
     /** {@link MongoTemplate} */
     private MongoTemplate mongoTemplate;
 
     /** {@link ResourceLoader} */
     private ResourceLoader resourceLoader;
-
-    /**
-     * getter method
-     * 
-     * @see ExtendedDaoSupport#jdbcTemplate
-     * @return the jdbcTemplate
-     */
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    /**
-     * setter method
-     * 
-     * @see ExtendedDaoSupport#jdbcTemplate
-     * @param jdbcTemplate
-     *            the jdbcTemplate to set
-     */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     /**
      * getter method
@@ -90,8 +69,29 @@ public class ExtendedDaoSupport {
         this.resourceLoader = resourceLoader;
     }
 
+    /**
+     * getter method
+     * 
+     * @see ExtendedDaoSupport#hibernateTemplate
+     * @return the hibernateTemplate
+     */
+    public HibernateTemplate getHibernateTemplate() {
+        return hibernateTemplate;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see ExtendedDaoSupport#hibernateTemplate
+     * @param hibernateTemplate
+     *            the hibernateTemplate to set
+     */
+    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+        this.hibernateTemplate = hibernateTemplate;
+    }
+
     @Override
     public String toString() {
-        return "ExtendedDaoSupport [jdbcTemplate=" + jdbcTemplate + ", mongoTemplate=" + mongoTemplate + ", resourceLoader=" + resourceLoader + "]";
+        return "ExtendedDaoSupport [hibernateTemplate=" + hibernateTemplate + ", mongoTemplate=" + mongoTemplate + ", resourceLoader=" + resourceLoader + "]";
     }
 }

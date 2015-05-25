@@ -6,12 +6,20 @@
 
 package org.archmage.cc.crawl.collector.manager.stock;
 
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.archmage.cc.configuration.XmlConfiguration;
 import org.archmage.cc.crawl.bean.EntireObject;
+import org.archmage.cc.crawl.bean.ErrorCode;
 import org.archmage.cc.crawl.collector.manager.AbstractCollectorManager;
 import org.archmage.cc.crawl.daosupport.ExtendedDaoSupport;
+import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.framework.log.LogContainer;
+import org.archmage.cc.infosource.dto.response.stock.Result;
 import org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject;
+import org.archmage.cc.model.stock.Stock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -43,9 +51,34 @@ public class SinaStockCollectorManager extends AbstractCollectorManager {
     private ExtendedDaoSupport daoSupport;
 
     @Override
-    protected boolean putIntoDB(EntireObject entireObject) {
-        // XXX
-        return true;
+    protected void putIntoDB(EntireObject entireObject) throws CrawlErrorException {
+        SinaStockResponseObject stockResponseObject = (SinaStockResponseObject) entireObject.getResponseObject();
+
+        List<Result> resultList = stockResponseObject.getResultList();
+        if (CollectionUtils.isEmpty(resultList)) {
+            throw new CrawlErrorException(ErrorCode.RESPONSE_DATA_COULD_NOT_BE_EMPTY);
+        }
+
+        for (Result result : resultList) {
+            List<Stock> stockList = daoSupport.getHibernateTemplate().findByNamedParam("SELECT s FROM Stock s WHERE s.symbol = :symbol", "symbol", result.getSymbol());
+            if (CollectionUtils.isNotEmpty(stockList) && stockList.size() >= 2) {
+
+                throw new CrawlErrorException(ErrorCode.TWO_MORE_SIMILAR_STOCKS);
+            }
+
+            if (CollectionUtils.isNotEmpty(stockList) && stockList.size() == 1) {
+                continue;
+            }
+
+            Stock stock = new Stock();
+
+            stock.setCode(result.getCode());
+            stock.setSymbol(result.getSymbol());
+            stock.setName(result.getName());
+            stock.setAddTime(new Date().getTime());
+
+            daoSupport.getHibernateTemplate().save(stock);
+        }
     }
 
     @Override

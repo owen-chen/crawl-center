@@ -29,7 +29,7 @@ import org.springframework.util.Log4jConfigurer;
  * @author : chen.chen.9
  * @date : 2013-8-14
  */
-@ContextConfiguration(locations = { "classpath:spring/common/applicationContext-*.xml", "classpath*:spring/common/applicationContext-*.xml" })
+@ContextConfiguration(locations = { "classpath:spring/local/applicationContext-*.xml", "classpath*:spring/common/applicationContext-*.xml" })
 public class AbstractTestng extends AbstractTestNGSpringContextTests {
     /** LOGGER */
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

@@ -6,8 +6,8 @@
 				<Code>10001</Code>
 				<Runnable>true</Runnable>
 				<Class>org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager</Class>
-				<ThreadPoolSize>1</ThreadPoolSize>
-				<Timeout title='time unit is second'>30</Timeout>
+				<ThreadPoolSize>5</ThreadPoolSize>
+				<Timeout title='time unit is second'>100</Timeout>
 			</Target>
 		</Targets>
 	</Crawl>

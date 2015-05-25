@@ -6,6 +6,8 @@
 
 package org.archmage.cc.crawl.collector.manager;
 
+import org.archmage.cc.crawl.exception.CrawlErrorException;
+
 /**
  * data collector manager
  * <p>
@@ -20,5 +22,5 @@ public interface CollectorManager {
      * 
      * @author chen.chen.9, 2013-8-26
      */
-    void collect();
+    void collect() throws CrawlErrorException;
 }

@@ -97,8 +97,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
                         long time1 = System.currentTimeMillis();
                         String url = null;
                         try {
-                            url = subInfosource.getUrl();
-                            url = generateUrl(url, requestObject);
+                            url = generateUrl(subInfosource.getUrl(), requestObject);
                         }
                         catch (UnsupportedEncodingException e) {
                             throw new InfosourceErrorException(InfosourceErrorCode.UNSUPPORTED_ENCODING_EXCEPTION);
@@ -242,7 +241,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
         long time2 = System.currentTimeMillis();
         String response = null;
         try {
-            response = doRequest(url, subInfosource.getTimeout(), repeated);
+            response = doRequest(url, subInfosource.getTimeout(), repeated, subInfosource.getResponseCharset());
         }
         catch (HttpException e) {
             throw new InfosourceErrorException(InfosourceErrorCode.REQUEST_IS_EXCEPTION);
@@ -292,12 +291,14 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
      *            timeout
      * @param repeated
      *            whether or not repeated if failed
+     * @param charset
+     *            the charset of respones
      * @return data
      * @throws IOException
      * @throws HttpException
      * @throws InfosourceErrorException
      */
-    protected String doRequest(String url, int timeout, boolean repeated) throws HttpException, IOException, InfosourceErrorException {
+    protected String doRequest(String url, int timeout, boolean repeated, String charset) throws HttpException, IOException, InfosourceErrorException {
         // load data from local file
         if (StringUtils.startsWith(url, "file://")) {
             int prefixLength = "file://".length();
@@ -355,7 +356,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
                     StatusLine statusLine = httpresponse.getStatusLine();
                     int statuscode = statusLine.getStatusCode();
                     if (statuscode >= 200 && statuscode < 300) {
-                        String result = IOUtils.toString(httpresponse.getEntity().getContent(), "UTF-8");
+                        String result = IOUtils.toString(httpresponse.getEntity().getContent(), StringUtils.isEmpty(charset) ? "UTF-8" : charset);
 
                         try {
                             validateResponseBody(url, result);

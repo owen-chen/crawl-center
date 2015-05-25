@@ -67,10 +67,13 @@ public class SinaStockCrawlDriver extends AbstractCrawlDriver<SinaStockResponseO
 
     @Override
     public int obtainTodoRequest() {
-        SinaStockRequestObject sinaStockRequestObject = new SinaStockRequestObject();
-        sinaStockRequestObject.setCode(INFOSOURCE_CODE);
+        for (int i = 1; i <= 4; i++) {
+            SinaStockRequestObject sinaStockRequestObject = new SinaStockRequestObject();
+            sinaStockRequestObject.setCode(INFOSOURCE_CODE);
+            sinaStockRequestObject.setPageNo(i);
 
-        todoRequestContainer.unshift(sinaStockRequestObject);
+            todoRequestContainer.unshift(sinaStockRequestObject);
+        }
 
         return todoRequestContainer.size();
     }

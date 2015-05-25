@@ -6,8 +6,10 @@
 
 package org.archmage.cc.infosource.request.stock;
 
+import org.apache.commons.lang.StringUtils;
 import org.archmage.cc.framework.log.LogContainer;
 import org.archmage.cc.infosource.dto.request.RequestObject;
+import org.archmage.cc.infosource.dto.request.stock.SinaStockRequestObject;
 import org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject;
 import org.archmage.cc.infosource.metadata.MetadataCacheManager;
 import org.archmage.cc.infosource.request.AbstractInfosourceRequest;
@@ -48,7 +50,8 @@ public class SinaStockInfosourceRequest extends AbstractInfosourceRequest<SinaSt
 
     @Override
     protected String generateUrl(String url, RequestObject requestObject) {
-        return url;
+        SinaStockRequestObject sinaStockRequestObject = (SinaStockRequestObject) requestObject;
+        return StringUtils.replace(url, "${PAGE_NO}", Integer.toString(sinaStockRequestObject.getPageNo()));
     }
 
     @Override

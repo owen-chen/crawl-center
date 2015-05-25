@@ -7,7 +7,6 @@
 package org.archmage.cc.crawl.collector.manager;
 
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,9 +20,11 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.archmage.cc.configuration.XmlConfiguration;
 import org.archmage.cc.crawl.bean.BackupHistoryDataBean;
 import org.archmage.cc.crawl.bean.EntireObject;
+import org.archmage.cc.crawl.bean.ErrorCode;
 import org.archmage.cc.crawl.bean.log.CollectorInnerLog;
 import org.archmage.cc.crawl.bean.log.CrawlJobLogBean;
 import org.archmage.cc.crawl.daosupport.ExtendedDaoSupport;
+import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.framework.log.LogContainer;
 import org.archmage.cc.infosource.dto.response.ResponseObject;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ import com.mongodb.CommandResult;
  */
 public abstract class AbstractCollectorManager implements CollectorManager {
     @Override
-    public void collect() {
+    public void collect() throws CrawlErrorException {
         long startTime = System.currentTimeMillis();
         CollectorInnerLog collectorInnerLog = new CollectorInnerLog();
 
@@ -51,7 +52,7 @@ public abstract class AbstractCollectorManager implements CollectorManager {
             collectorInnerLog.setRetrieveElapsedTime(System.currentTimeMillis() - retrieveStartTime);
             collectorInnerLog.setRetrievedDataSize(crawledDataList.size());
             if (CollectionUtils.isEmpty(crawledDataList)) {
-                throw new RuntimeException(MessageFormat.format("Could not find any temp data for {0}", getClass().getName()));
+                throw new CrawlErrorException(ErrorCode.TEMP_DATA_NOT_EXIST_IN_MONGODB);
             }
 
             // 2.validate data
@@ -61,12 +62,15 @@ public abstract class AbstractCollectorManager implements CollectorManager {
             long persistStartTime = System.currentTimeMillis();
             int succeedToPersist = 0;
             for (final EntireObject entireObject : crawledDataList) {
-                // XXX batch
-                // XXX failed to insert
-                boolean successfulToInsert = putIntoDB(entireObject);
-                if (successfulToInsert) {
-                    succeedToPersist++;
+                try {
+                    putIntoDB(entireObject);
                 }
+                catch (Exception e) {
+                    // XXX failed to insert
+                    continue;
+                }
+
+                succeedToPersist++;
             }
             collectorInnerLog.setPersistElapsedTime(System.currentTimeMillis() - persistStartTime);
             collectorInnerLog.setSucceedToPersistCount(succeedToPersist);
@@ -100,8 +104,9 @@ public abstract class AbstractCollectorManager implements CollectorManager {
      * @author chen.chen.9, 2013-10-24
      * @param crawledDataList
      *            {@link EntireObject} list
+     * @throws CrawlErrorException
      */
-    private void validateTotally(List<EntireObject> crawledDataList) {
+    private void validateTotally(List<EntireObject> crawledDataList) throws CrawlErrorException {
         int succeedCount = 0;
         for (EntireObject entireObject : crawledDataList) {
             if (entireObject == null) {
@@ -113,7 +118,10 @@ public abstract class AbstractCollectorManager implements CollectorManager {
                 continue;
             }
 
-            if (!customValidateTotally(responseObject)) {
+            try {
+                customValidateTotally(responseObject);
+            }
+            catch (Exception e) {
                 continue;
             }
 
@@ -121,9 +129,9 @@ public abstract class AbstractCollectorManager implements CollectorManager {
         }
 
         double successRate = (double) succeedCount / crawledDataList.size();
-        boolean available = successRate > retrieveThreshold();
+        boolean available = successRate >= retrieveThreshold();
         if (!available) {
-            throw new RuntimeException(MessageFormat.format("The success rate {} does not exceed threshold {}", successRate, retrieveThreshold()));
+            throw new CrawlErrorException(ErrorCode.SUCCESS_RATE_NOT_EXCEED_THRESHOLD);
         }
     }
 
@@ -134,10 +142,8 @@ public abstract class AbstractCollectorManager implements CollectorManager {
      * @author chen.chen.9, 2013-10-23
      * @param responseObject
      *            {@link ResponseObject}
-     * @return is valid
      */
-    protected boolean customValidateTotally(ResponseObject responseObject) {
-        return true;
+    protected void customValidateTotally(ResponseObject responseObject) throws CrawlErrorException {
     }
 
     /**
@@ -158,9 +164,8 @@ public abstract class AbstractCollectorManager implements CollectorManager {
      * @author chen.chen.9, 2013-9-27
      * @param entireObject
      *            {@link EntireObject}
-     * @return is successful
      */
-    protected abstract boolean putIntoDB(final EntireObject entireObject);
+    protected abstract void putIntoDB(final EntireObject entireObject) throws CrawlErrorException;
 
     /**
      * retrieve all temp data

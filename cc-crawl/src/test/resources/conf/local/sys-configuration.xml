@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
 	<Database>
+		<DB>
+			<DriverClass>com.mysql.jdbc.Driver</DriverClass>
+			<ConnectionStr>jdbc:mysql://localhost:3306/crawl-center-test?characterEncoding=UTF8</ConnectionStr>
+			<Username>root</Username>
+			<Password>root</Password>
+		</DB>
 		<MongoDB>
 			<Ip>localhost</Ip>
 			<Port>27001</Port>
@@ -20,7 +26,7 @@
 
 	<Collector>
 		<BackupEndName>.bak</BackupEndName>
-		<Threshold>0.9</Threshold>
+		<Threshold>1</Threshold>
 	</Collector>
 
 	<Log>
@@ -30,5 +36,5 @@
 		<Machine>machine</Machine>
 	</Log>
 
-	<IsTestEnvironment>false</IsTestEnvironment>
+	<IsTestEnvironment>true</IsTestEnvironment>
 </Root>

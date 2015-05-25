@@ -23,6 +23,7 @@
 		<module>cc-framework</module>
 
 		<!-- infosource request module -->
+		<module>cc-model</module>
 		<module>cc-infosource-request</module>
 
 		<!-- main module -->

@@ -57,7 +57,7 @@ public class SinaStockCrawlDriverTest extends AbstractTestng {
 
         // 第一次爬取
         Assert.assertTrue(sinaStockCrawlDriver.capture());
-        Assert.assertTrue(sinaStockCrawlDriver.getTodoRequestContainer().empty());
+        Assert.assertFalse(sinaStockCrawlDriver.getTodoRequestContainer().empty());
         Assert.assertFalse(sinaStockCrawlDriver.getVisitedRequestContainer().empty());
         Assert.assertEquals(sinaStockCrawlDriver.getVisitedRequestContainer().size(), 1);
 
@@ -65,16 +65,19 @@ public class SinaStockCrawlDriverTest extends AbstractTestng {
         Assert.assertTrue(CollectionUtils.isNotEmpty(entireObjectList));
         Assert.assertEquals(entireObjectList.size(), 1);
 
-        Assert.assertTrue(sinaStockCrawlDriver.isCrawlFinish());
+        Assert.assertFalse(sinaStockCrawlDriver.isCrawlFinish());
 
         // 第二次爬取
-        Assert.assertFalse(sinaStockCrawlDriver.capture());
+        Assert.assertTrue(sinaStockCrawlDriver.capture());
+        Assert.assertFalse(sinaStockCrawlDriver.getTodoRequestContainer().empty());
+        Assert.assertFalse(sinaStockCrawlDriver.getVisitedRequestContainer().empty());
+        Assert.assertEquals(sinaStockCrawlDriver.getVisitedRequestContainer().size(), 2);
 
         entireObjectList = daoSupport.getMongoTemplate().findAll(EntireObject.class, SinaStockResponseObject.class.getSimpleName());
         Assert.assertTrue(CollectionUtils.isNotEmpty(entireObjectList));
-        Assert.assertEquals(entireObjectList.size(), 1);
+        Assert.assertEquals(entireObjectList.size(), 2);
 
-        Assert.assertTrue(sinaStockCrawlDriver.isCrawlFinish());
+        Assert.assertFalse(sinaStockCrawlDriver.isCrawlFinish());
     }
 
     @Test

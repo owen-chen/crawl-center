@@ -20,7 +20,7 @@ import org.apache.http.impl.client.HttpClients;
  */
 public class HttpclientGenerator {
     /** default time out is 10 seconds */
-    private static final int DEFAULT_TIME_OUT = 10000;
+    private static final int DEFAULT_TIME_OUT = 100000;
 
     /**
      * generator
@@ -43,6 +43,10 @@ public class HttpclientGenerator {
      * @return {@link CloseableHttpClient}
      */
     public static CloseableHttpClient generate(int timeout) {
+        if (timeout <= 0) {
+            timeout = DEFAULT_TIME_OUT;
+        }
+        
         RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(timeout).setSocketTimeout(timeout).setConnectTimeout(timeout).build();
         HttpClientBuilder httpClientBuilder = HttpClients.custom().setDefaultRequestConfig(requestConfig);
         return httpClientBuilder.build();
