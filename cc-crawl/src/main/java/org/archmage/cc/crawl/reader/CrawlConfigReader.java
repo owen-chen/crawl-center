@@ -56,7 +56,7 @@ public class CrawlConfigReader {
             crawlStatus.setCode(crawlConfig.getString("Crawl.Targets.Target(" + i + ").Code"));
             crawlStatus.setThreadPoolSize(crawlConfig.getInt("Crawl.Targets.Target(" + i + ").ThreadPoolSize"));
             long timeout = crawlConfig.getInt("Crawl.Targets.Target(" + i + ").Timeout");
-            crawlStatus.setTimeout((timeout > 0 ? timeout : 1 * 60 * 60) * 1000);
+            crawlStatus.setTimeout(timeout > 0 ? timeout * 1000 : Integer.MAX_VALUE);
 
             crawlStatusMap.put(clazz, crawlStatus);
         }

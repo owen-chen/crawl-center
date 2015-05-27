@@ -20,5 +20,13 @@ public interface CrawlJob {
      *
      * @author chen.chen.9, May 21, 2015
      */
-    public void crawlSinaStockJob();
+    void crawlSinaStockJob();
+
+    /**
+     * crawl sina history trade job
+     * <p>
+     *
+     * @author chen.chen.9, May 21, 2015
+     */
+    void crawlSinaHistoryTradeJob();
 }

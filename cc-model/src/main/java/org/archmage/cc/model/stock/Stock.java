@@ -40,11 +40,18 @@ public class Stock {
     /**
      * constructor
      * 
-     * @param id
+     * @param name
+     * @param code
+     * @param symbol
+     * @param addTime
      */
-    public Stock(long id) {
+    public Stock(String name, String code, String symbol, Long addTime) {
         super();
-        this.id = id;
+
+        this.name = name;
+        this.code = code;
+        this.symbol = symbol;
+        this.addTime = addTime;
     }
 
     /**
@@ -54,7 +61,6 @@ public class Stock {
      * @param name
      * @param code
      * @param symbol
-     * @param bondType
      * @param addTime
      */
     public Stock(long id, String name, String code, String symbol, Long addTime) {

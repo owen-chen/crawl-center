@@ -8,6 +8,7 @@ package org.archmage.cc.crawl.job.impl;
 
 import org.archmage.cc.configuration.XmlConfiguration;
 import org.archmage.cc.crawl.job.CrawlJob;
+import org.archmage.cc.crawl.manager.historyTrade.SinaHistoryTradeCrawlManager;
 import org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,9 @@ public class CrawlJobImpl implements CrawlJob {
     /** {@link SinaStockCrawlManager} */
     private SinaStockCrawlManager sinaStockCrawlManager;
 
+    /** {@link SinaHistoryTradeCrawlManager} */
+    private SinaHistoryTradeCrawlManager sinaHistoryTradeCrawlManager;
+
     @Override
     public void crawlSinaStockJob() {
         if (isTestEnvironment()) {
@@ -36,6 +40,15 @@ public class CrawlJobImpl implements CrawlJob {
         }
 
         sinaStockCrawlManager.crawl();
+    }
+
+    @Override
+    public void crawlSinaHistoryTradeJob() {
+        if (isTestEnvironment()) {
+            return;
+        }
+
+        sinaHistoryTradeCrawlManager.crawl();
     }
 
     /**
@@ -74,5 +87,16 @@ public class CrawlJobImpl implements CrawlJob {
      */
     public void setSinaStockCrawlManager(SinaStockCrawlManager sinaStockCrawlManager) {
         this.sinaStockCrawlManager = sinaStockCrawlManager;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see CrawlJobImpl#sinaHistoryTradeCrawlManager
+     * @param sinaHistoryTradeCrawlManager
+     *            the sinaHistoryTradeCrawlManager to set
+     */
+    public void setSinaHistoryTradeCrawlManager(SinaHistoryTradeCrawlManager sinaHistoryTradeCrawlManager) {
+        this.sinaHistoryTradeCrawlManager = sinaHistoryTradeCrawlManager;
     }
 }

@@ -15,5 +15,20 @@
 				</SubInfosource>
 			</SubInfosources>
 		</Infosource>
+		<Infosource>
+			<Code>10002</Code>
+			<Name>sina stock history trade</Name>
+			<RequestHandlerClass>org.archmage.cc.infosource.request.historyTrade.SinaHistoryTradeInfosourceRequest</RequestHandlerClass>
+			<ResponseClass>org.archmage.cc.infosource.dto.response.historyTrade.SinaHistoryTradeResponseObject</ResponseClass>
+			<SubInfosources>
+				<SubInfosource>
+					<Name>history.trade.sina</Name>
+					<Url>http://market.finance.sina.com.cn/downxls.php?date=${YEAR}-${MONTH}-${DAY}&amp;symbol=${SYMBOL}</Url>
+					<ResponseType>html</ResponseType>
+					<ParserClass>org.archmage.cc.infosource.parse.historyTrade.SinaHistoryTradeParser</ParserClass>
+					<ResponseCharset>GB2312</ResponseCharset>
+				</SubInfosource>
+			</SubInfosources>
+		</Infosource>
 	</Infosources>
 </Root>

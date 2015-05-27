@@ -8,4 +8,11 @@
 		<property name="adminMongoTemplate" ref="adminMongoTemplate" />
 		<property name="logContainer" ref="logContainer" />
 	</bean>
+
+	<bean id="sinaHistoryTradeCollectorManager" class="org.archmage.cc.crawl.collector.manager.historyTrade.SinaHistoryTradeCollectorManager">
+		<property name="sysconfig" ref="sysconfig" />
+		<property name="daoSupport" ref="daoSupport" />
+		<property name="adminMongoTemplate" ref="adminMongoTemplate" />
+		<property name="logContainer" ref="logContainer" />
+	</bean>
 </beans>

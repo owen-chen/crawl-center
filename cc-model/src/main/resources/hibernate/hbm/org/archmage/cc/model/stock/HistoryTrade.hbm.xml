@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="org.archmage.cc.model.stock.HistoryTrade"
+        table="history_trade"
+        lazy="false"
+        dynamic-update="true"
+        dynamic-insert="true"
+    >
+
+        <id
+            name="id"
+            column="id"
+            type="long"
+            unsaved-value="0"
+        >
+            <generator class="native">
+              <!--  
+                  To add non XDoclet generator parameters, create a file named 
+                  hibernate-generator-params-HistoryTrade.xml 
+                  containing the additional parameters and place it in your merge dir. 
+              --> 
+            </generator>
+        </id>
+
+        <property
+            name="symbol"
+            type="string"
+            update="true"
+            insert="true"
+            column="symbol"
+        />
+
+        <property
+            name="currentTime"
+            type="long"
+            update="true"
+            insert="true"
+            column="currentTime"
+        />
+
+        <property
+            name="current"
+            type="float"
+            update="true"
+            insert="true"
+            column="current"
+        />
+
+        <property
+            name="quoteTrend"
+            type="float"
+            update="true"
+            insert="true"
+            column="quoteTrend"
+        />
+
+        <property
+            name="dealAmount"
+            type="int"
+            update="true"
+            insert="true"
+            column="dealAmount"
+        />
+
+        <property
+            name="dealFigure"
+            type="long"
+            update="true"
+            insert="true"
+            column="dealFigure"
+        />
+
+        <property
+            name="feature"
+            type="int"
+            update="true"
+            insert="true"
+            column="feature"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-HistoryTrade.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

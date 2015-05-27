@@ -6,6 +6,7 @@
 
 package org.archmage.cc.infosource.dto.response.stock;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.archmage.cc.infosource.AbstractTestng;
@@ -29,6 +30,7 @@ public class SinaStockResponseObjectTest extends AbstractTestng {
         String result = readResponse("classpath:response/stock/" + filename);
 
         SinaStockResponseObject sinaStockResponseObject = (SinaStockResponseObject) new BaseParser<SinaStockResponseObject>().parse(SinaStockResponseObject.class, result, "json");
+        sinaStockResponseObject.setErrorCodeInRequestList(new ArrayList<String>());
 
         Assert.assertEquals(sinaStockResponseObject.toString(), expected.toString());
     }

@@ -42,18 +42,8 @@ public enum InfosourceErrorCode {
 
     /** 特别信源的异常错误 */
     /** 股票 */
-    /** 新浪财经股票数据不合法，start，top，bottom为空%IS#_2051 */
-    STOCK_SINA_FINANCE_INVALID_DATA("%IS#_2051"),
-    /** 指南针股票：访问信源返回错误信息%IS%_2052 */
-    STOCK_COMPASS_ERROR_DATA_RETURN("%IS%_2052"),
-    /** 指南针股票：返回空的数据体%IS#_2053 */
-    STOCK_COMPASS_NULL_DATA_RETURN("%IS#_2053"),
-
-    /** 股票 */
-    /** 股票：股票代码不能为空%IS~_3070 */
-    STOCK_NULL_CODE("%IS~_3070"),
-    /** 股票：股票种类不能为空%IS~_3071 */
-    STOCK_NULL_CATEGORY("%IS~_3071"),
+    /** 股市休市 */
+    STOCK_CLOSED("%IS%_2001"),
 
     /** 其他普通错误异常%IS%_500 */
     RUNTIME_EXCEPTION("%IS%_500");

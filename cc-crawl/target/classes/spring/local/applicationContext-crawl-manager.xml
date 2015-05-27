@@ -11,4 +11,14 @@
 		<property name="sysconfig" ref="sysconfig" />
 		<property name="concurrentTaskExecutor" ref="concurrentTaskExecutor" />
 	</bean>
+
+	<bean id="sinaHistoryTradeCrawlManager" class="org.archmage.cc.crawl.manager.historyTrade.SinaHistoryTradeCrawlManager">
+		<property name="infosourceRequestFactory" ref="infosourceRequestFactory" />
+		<property name="crawlConfigReader" ref="crawlConfigReader" />
+		<property name="collectorManager" ref="sinaHistoryTradeCollectorManager" />
+		<property name="daoSupport" ref="daoSupport" />
+		<property name="logContainer" ref="logContainer" />
+		<property name="sysconfig" ref="sysconfig" />
+		<property name="concurrentTaskExecutor" ref="concurrentTaskExecutor" />
+	</bean>
 </beans>
