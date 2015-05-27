@@ -41,7 +41,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
             return fromXml(clazz, original);
         }
         else if (StringUtils.equals(type, "html")) {
-            return fromHtml(clazz, original);
+            return fromHtml(original);
         }
         else {
             throw new InfosourceErrorException(InfosourceErrorCode.UNSUPPORTED_PARSER_TYPE_EXCEPTION);
@@ -113,8 +113,6 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
      * <p>
      * 
      * @author chen.chen.9, 2013-9-3
-     * @param clazz
-     *            the class
      * @param original
      *            original response html
      * @return the class
@@ -124,8 +122,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
      * @throws IllegalArgumentException
      * @throws SecurityException
      */
-    protected T fromHtml(Class<T> clazz, String original) throws InfosourceErrorException, SecurityException, IllegalArgumentException, NoSuchFieldException,
-            IllegalAccessException {
+    protected T fromHtml(String original) throws InfosourceErrorException {
         throw new InfosourceErrorException(InfosourceErrorCode.UNSUPPORTED_OPERATION_EXCEPTION);
     }
 

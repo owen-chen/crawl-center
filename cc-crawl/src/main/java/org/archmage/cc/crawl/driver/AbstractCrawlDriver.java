@@ -15,6 +15,7 @@ import org.archmage.cc.crawl.bean.ErrorCode;
 import org.archmage.cc.crawl.bean.log.CrawlInnerLog;
 import org.archmage.cc.crawl.bean.log.CrawlTaskLogBean;
 import org.archmage.cc.crawl.container.Container;
+import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.framework.log.LogContainer;
 import org.archmage.cc.infosource.dto.request.RequestObject;
 import org.archmage.cc.infosource.dto.response.ResponseObject;
@@ -65,7 +66,7 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
 
                 // 2. capture by this todo request
                 t = doCapture(requestObject);
-
+                
                 // 3. insert t to MongoDB
                 if (t != null && t.isSuccess()) {
                     getMongoTemplate().insert(new EntireObject(requestObject, t), t.getClass().getSimpleName());
@@ -125,7 +126,7 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
     }
 
     @Override
-    public abstract int obtainTodoRequest();
+    public abstract int obtainTodoRequest() throws CrawlErrorException;
 
     /**
      * capture

@@ -70,6 +70,6 @@ public class SinaStockResponseObject extends ResponseObject {
 
     @Override
     public String toString() {
-        return "SinaStockResponseObject [resultList=" + resultList + "]";
+        return "SinaStockResponseObject [resultList=" + resultList + ", toString()=" + super.toString() + "]";
     }
 }

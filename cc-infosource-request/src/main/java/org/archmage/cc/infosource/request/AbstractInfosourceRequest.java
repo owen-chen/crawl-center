@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.SocketException;
@@ -95,13 +94,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
 
                         // 1. generate url
                         long time1 = System.currentTimeMillis();
-                        String url = null;
-                        try {
-                            url = generateUrl(subInfosource.getUrl(), requestObject);
-                        }
-                        catch (UnsupportedEncodingException e) {
-                            throw new InfosourceErrorException(InfosourceErrorCode.UNSUPPORTED_ENCODING_EXCEPTION);
-                        }
+                        String url = generateUrl(subInfosource.getUrl(), requestObject);
                         subInfosourceRequestInnerLog.setUrl(url);
 
                         if (StringUtils.isEmpty(url)) {
@@ -531,7 +524,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
      *            {@link RequestObject}
      * @return generated url
      */
-    protected abstract String generateUrl(String url, RequestObject requestObject) throws UnsupportedEncodingException, InfosourceErrorException;
+    protected abstract String generateUrl(String url, RequestObject requestObject);
 
     /**
      * getter method

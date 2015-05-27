@@ -5,6 +5,7 @@
 	<bean id="job" class="org.archmage.cc.crawl.job.impl.CrawlJobImpl">
 		<property name="sysconfig" ref="sysconfig" />
 		<property name="sinaStockCrawlManager" ref="sinaStockCrawlManager" />
+		<property name="sinaHistoryTradeCrawlManager" ref="sinaHistoryTradeCrawlManager" />
 	</bean>
 
 	<!-- sina stock -->
@@ -18,9 +19,20 @@
 		<property name="cronExpression" value="0 0 6 ? * MON-FRI" />
 	</bean>
 
+	<!-- sina history trade -->
+	<bean id="sinaHistoryTradeCrawlJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="job" />
+		<property name="targetMethod" value="crawlSinaHistoryTradeJob" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="sinaHistoryTradeCrawlTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="sinaHistoryTradeCrawlJob" />
+		<property name="cronExpression" value="0 0 6 ? * SAT" />
+	</bean>
+
 	<!-- test -->
 	<bean id="test" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="sinaStockCrawlJob" />
+		<property name="jobDetail" ref="sinaHistoryTradeCrawlJob" />
 		<property name="startDelay" value="5000" />
 		<property name="repeatInterval" value="9223372036854775807" />
 	</bean>
@@ -30,6 +42,7 @@
 			<list>
 				<!--
 					<ref bean="sinaStockCrawlTrigger" /> 
+					<ref bean="sinaHistoryTradeCrawlTrigger" /> 
 					-->
 
 				<ref bean="test" />

@@ -9,6 +9,12 @@
 				<ThreadPoolSize>5</ThreadPoolSize>
 				<Timeout title='time unit is second'>100</Timeout>
 			</Target>
+			<Target>
+				<Code>10002</Code>
+				<Runnable>true</Runnable>
+				<Class>org.archmage.cc.crawl.manager.historyTrade.SinaHistoryTradeCrawlManager</Class>
+				<ThreadPoolSize>50</ThreadPoolSize>
+			</Target>
 		</Targets>
 	</Crawl>
 </Root>

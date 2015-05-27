@@ -53,7 +53,6 @@ public class SinaStockCollectorManagerTest extends AbstractTestng {
     private static final SinaStockResponseObject sinaStockResponseObject = new SinaStockResponseObject();
     {
         sinaStockResponseObject.getResultList().add(new Result("sh600000", "600000", "浦发银行"));
-        sinaStockResponseObject.getResultList().add(new Result("sh600004", "600004", "白云机场"));
         sinaStockResponseObject.setSuccess(true);
 
     }
@@ -66,13 +65,10 @@ public class SinaStockCollectorManagerTest extends AbstractTestng {
         sinaStockCollectorManager.collect();
 
         List<Stock> stockList = hibernateTemplate.loadAll(Stock.class);
-        Assert.assertEquals(stockList.size(), 2);
-        Result result1 = sinaStockResponseObject.getResultList().get(1);
+        Assert.assertEquals(stockList.size(), 1);
+        Result result1 = sinaStockResponseObject.getResultList().get(0);
         Assert.assertEquals(stockList.get(0).toString(), new Stock(stockList.get(0).getId(), result1.getName(), result1.getCode(), result1.getSymbol(),
                                                                    stockList.get(0).getAddTime()).toString());
-        Result result2 = sinaStockResponseObject.getResultList().get(0);
-        Assert.assertEquals(stockList.get(1).toString(), new Stock(stockList.get(1).getId(), result2.getName(), result2.getCode(), result2.getSymbol(),
-                                                                   stockList.get(1).getAddTime()).toString());
 
         Assert.assertFalse(mongoTemplate.collectionExists(SinaStockResponseObject.class.getSimpleName()));
 

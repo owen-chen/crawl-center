@@ -6,6 +6,7 @@
 
 package org.archmage.cc.crawl.driver;
 
+import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.infosource.dto.response.ResponseObject;
 
 /**
@@ -31,8 +32,9 @@ public interface CrawlDriver<T extends ResponseObject> {
      * 
      * @author chen.chen.9, 2013-8-23
      * @return todo request size
+     * @throws CrawlErrorException
      */
-    int obtainTodoRequest();
+    int obtainTodoRequest() throws CrawlErrorException;
 
     /**
      * is crawl finish

@@ -49,7 +49,7 @@ public class SinaStockCrawlManager extends AbstractCrawlManager {
     /** {@link InfosourceRequestFactory} */
     private InfosourceRequestFactory<SinaStockResponseObject> infosourceRequestFactory;
 
-    /** {@link CnWeatherCollectorManager} */
+    /** {@link CollectorManager} */
     private CollectorManager collectorManager;
 
     /** {@link ConcurrentTaskExecutor} */
@@ -176,5 +176,4 @@ public class SinaStockCrawlManager extends AbstractCrawlManager {
     public void setConcurrentTaskExecutor(ConcurrentTaskExecutor concurrentTaskExecutor) {
         this.concurrentTaskExecutor = concurrentTaskExecutor;
     }
-
 }
