@@ -6,6 +6,7 @@
 
 package org.archmage.cc.infosource.dto.response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,10 @@ import java.util.List;
  * @author : chen.chen.9
  * @date : 2013-8-19
  */
-public class ResponseObject {
+public class ResponseObject implements Serializable {
+    /** Serial version UID */
+    private static final long serialVersionUID = 213631724939950777L;
+
     /** whether successful */
     private boolean isSuccess;
 

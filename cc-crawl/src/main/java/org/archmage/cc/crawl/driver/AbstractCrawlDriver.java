@@ -66,7 +66,9 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
 
                 // 2. capture by this todo request
                 t = doCapture(requestObject);
-                
+
+                getLOGGER().info(t.toString());
+
                 // 3. insert t to MongoDB
                 if (t != null && t.isSuccess()) {
                     getMongoTemplate().insert(new EntireObject(requestObject, t), t.getClass().getSimpleName());
@@ -120,7 +122,8 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
 
     @Override
     public boolean isCrawlFinish() {
-        getLOGGER().info("{} todo: {} precessCount: {}", new Object[] { getClass().getSimpleName(), getTodoRequestContainer().size(), getProcessCount() });
+        getLOGGER().info("{} todo: {} precessCount: {} history: {}",
+                         new Object[] { getClass().getSimpleName(), getTodoRequestContainer().size(), getProcessCount(), getVisitedRequestContainer().size() });
 
         return getTodoRequestContainer().empty() && getProcessCount() == 0;
     }

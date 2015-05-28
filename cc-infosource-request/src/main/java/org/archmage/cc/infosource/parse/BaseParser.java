@@ -32,7 +32,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
     protected final String ROOT = "object";
 
     @Override
-    public T parse(Class<T> clazz, String original, String type) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
+    public <T> T parse(Class<T> clazz, String original, String type) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             InfosourceErrorException {
         if (StringUtils.equals(type, "json")) {
             return fromJson(clazz, original);
@@ -64,7 +64,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
      */
-    protected T fromXml(Class<T> clazz, String original) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    protected <T> T fromXml(Class<T> clazz, String original) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         HierarchicalStreamDriver hierarchicalStreamDriver = new DomDriver(UTF8);
 
         XStream xStream = generateXStream(hierarchicalStreamDriver);
@@ -89,7 +89,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    protected T fromJson(Class<T> clazz, String original) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    protected <T> T fromJson(Class<T> clazz, String original) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         HierarchicalStreamDriver hierarchicalStreamDriver = new JettisonMappedXmlDriver();
 
         XStream xStream = generateXStream(hierarchicalStreamDriver);
@@ -122,7 +122,7 @@ public class BaseParser<T> implements Parser<T>, ConstantsInterface {
      * @throws IllegalArgumentException
      * @throws SecurityException
      */
-    protected T fromHtml(String original) throws InfosourceErrorException {
+    protected <T> T fromHtml(String original) throws InfosourceErrorException {
         throw new InfosourceErrorException(InfosourceErrorCode.UNSUPPORTED_OPERATION_EXCEPTION);
     }
 

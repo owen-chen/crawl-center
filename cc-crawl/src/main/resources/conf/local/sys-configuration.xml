@@ -10,8 +10,6 @@
 		<MongoDB>
 			<Ip>${Maven.MongoDB.Ip}</Ip>
 			<Port>${Maven.MongoDB.Port}</Port>
-			<Username>${Maven.MongoDB.Username}</Username>
-			<Password>${Maven.MongoDB.Password}</Password>
 			<DatabaseName>${Maven.MongoDB.DatabaseName}</DatabaseName>
 			<AdminDatabaseName>${Maven.MongoDB.AdminDatabaseName}</AdminDatabaseName>
 		</MongoDB>

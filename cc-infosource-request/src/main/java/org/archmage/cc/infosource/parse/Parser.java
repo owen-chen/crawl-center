@@ -34,6 +34,6 @@ public interface Parser<T> {
      * @throws SecurityException
      * @throws InfosourceErrorException
      */
-    T parse(Class<T> clazz, String original, String type) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
+    <T> T parse(Class<T> clazz, String original, String type) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
             InfosourceErrorException;
 }

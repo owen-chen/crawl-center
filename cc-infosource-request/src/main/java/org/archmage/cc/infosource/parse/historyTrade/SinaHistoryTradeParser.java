@@ -22,9 +22,9 @@ import org.archmage.cc.infosource.parse.BaseParser;
  * @author : chen.chen.9
  * @date : May 25, 2015
  */
-public class SinaHistoryTradeParser extends BaseParser<SinaHistoryTradeResponseObject> {
+public class SinaHistoryTradeParser<T> extends BaseParser<T> {
     @Override
-    protected SinaHistoryTradeResponseObject fromHtml(String original) throws InfosourceErrorException {
+    protected <T> T fromHtml(String original) throws InfosourceErrorException {
         SinaHistoryTradeResponseObject sinaHistoryTradeResponseObject = new SinaHistoryTradeResponseObject();
 
         if (StringUtils.contains(original, "当天没有数据")) {
@@ -85,6 +85,6 @@ public class SinaHistoryTradeParser extends BaseParser<SinaHistoryTradeResponseO
             }
         }
 
-        return sinaHistoryTradeResponseObject;
+        return (T) sinaHistoryTradeResponseObject;
     }
 }

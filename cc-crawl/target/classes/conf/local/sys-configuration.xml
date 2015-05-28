@@ -10,8 +10,6 @@
 		<MongoDB>
 			<Ip>localhost</Ip>
 			<Port>27001</Port>
-			<Username>${Maven.MongoDB.Username}</Username>
-			<Password>${Maven.MongoDB.Password}</Password>
 			<DatabaseName>crawl-center</DatabaseName>
 			<AdminDatabaseName>admin</AdminDatabaseName>
 		</MongoDB>

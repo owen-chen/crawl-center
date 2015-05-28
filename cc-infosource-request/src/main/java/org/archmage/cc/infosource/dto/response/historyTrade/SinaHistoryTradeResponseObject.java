@@ -19,6 +19,9 @@ import org.archmage.cc.infosource.dto.response.ResponseObject;
  * @date : May 25, 2015
  */
 public class SinaHistoryTradeResponseObject extends ResponseObject {
+    /** Serial version UID */
+    private static final long serialVersionUID = -3281465076858135037L;
+
     /** {@link Result} list */
     private List<Result> resultList = new ArrayList<Result>();
 
