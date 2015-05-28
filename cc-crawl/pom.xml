@@ -96,5 +96,11 @@
 				<env>dev</env>
 			</properties>
 		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<env>prd</env>
+			</properties>
+		</profile>
 	</profiles>
 </project>
