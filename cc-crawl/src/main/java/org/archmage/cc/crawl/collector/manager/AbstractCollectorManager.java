@@ -29,6 +29,7 @@ import org.archmage.cc.framework.log.LogContainer;
 import org.archmage.cc.infosource.dto.response.ResponseObject;
 import org.slf4j.Logger;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.CommandResult;
 
@@ -46,37 +47,43 @@ public abstract class AbstractCollectorManager implements CollectorManager {
         CollectorInnerLog collectorInnerLog = new CollectorInnerLog();
 
         try {
-            // 1.read data
-            long retrieveStartTime = System.currentTimeMillis();
-            List<EntireObject> crawledDataList = retrieveAllTempData();
-            collectorInnerLog.setRetrieveElapsedTime(System.currentTimeMillis() - retrieveStartTime);
-            collectorInnerLog.setRetrievedDataSize(crawledDataList.size());
-            if (CollectionUtils.isEmpty(crawledDataList)) {
-                throw new CrawlErrorException(ErrorCode.TEMP_DATA_NOT_EXIST_IN_MONGODB);
-            }
-
-            // 2.validate data
-            validateTotally(crawledDataList);
-
-            // 3.persist
-            long persistStartTime = System.currentTimeMillis();
-            int succeedToPersist = 0;
-            for (final EntireObject entireObject : crawledDataList) {
-                try {
-                    putIntoDB(entireObject);
-                }
-                catch (Exception e) {
-                    // XXX failed to insert
-                    continue;
+            long countOfData = retrieveCountOfData();
+            int pageSize = 1000;
+            for (int pageNo = 1; pageNo <= Math.ceil((double) countOfData / pageSize); pageNo++) {
+                // 1.read data
+                long retrieveStartTime = System.currentTimeMillis();
+                List<EntireObject> crawledDataList = retrieveData(pageNo, pageSize);
+                collectorInnerLog.setRetrieveElapsedTime(collectorInnerLog.getRetrieveElapsedTime() + (System.currentTimeMillis() - retrieveStartTime));
+                collectorInnerLog.setRetrievedDataSize(collectorInnerLog.getRetrievedDataSize() + crawledDataList.size());
+                if (CollectionUtils.isEmpty(crawledDataList)) {
+                    throw new CrawlErrorException(ErrorCode.TEMP_DATA_NOT_EXIST_IN_MONGODB);
                 }
 
-                succeedToPersist++;
-            }
-            collectorInnerLog.setPersistElapsedTime(System.currentTimeMillis() - persistStartTime);
-            collectorInnerLog.setSucceedToPersistCount(succeedToPersist);
+                // 2.validate data
+                validateTotally(crawledDataList);
 
-            if (succeedToPersist != crawledDataList.size()) {
-                getLOGGER().warn("succeedToInsertCount {} != allTempDataCount {}", succeedToPersist, crawledDataList.size());
+                // 3.persist
+                long persistStartTime = System.currentTimeMillis();
+                int succeedToPersist = 0;
+                for (final EntireObject entireObject : crawledDataList) {
+                    try {
+                        putIntoDB(entireObject);
+                    }
+                    catch (Exception e) {
+                        // XXX failed to insert
+                        continue;
+                    }
+
+                    succeedToPersist++;
+                }
+                collectorInnerLog.setPersistElapsedTime(collectorInnerLog.getPersistElapsedTime() + (System.currentTimeMillis() - persistStartTime));
+                collectorInnerLog.setSucceedToPersistCount(collectorInnerLog.getSucceedToPersistCount() + succeedToPersist);
+
+                getLOGGER().info("{} is collecting: {} / {}", getResponseClassSimpleName(), Math.min(pageNo * pageSize, countOfData), countOfData);
+            }
+
+            if (collectorInnerLog.getSucceedToPersistCount() != countOfData) {
+                getLOGGER().warn("succeedToInsertCount {} != allTempDataCount {}", collectorInnerLog.getSucceedToPersistCount(), countOfData);
             }
 
             // 4. backup history data
@@ -168,15 +175,30 @@ public abstract class AbstractCollectorManager implements CollectorManager {
     protected abstract void putIntoDB(final EntireObject entireObject) throws CrawlErrorException;
 
     /**
-     * retrieve all temp data
+     * retrieve data
      * <p>
      * 
      * @author chen.chen.9, 2013-8-26
-     * @return temp data list
+     * @param pageNo
+     *            page no
+     * @param pageSize
+     *            page size
+     * @return data list
      */
-    protected List<EntireObject> retrieveAllTempData() {
-        // XXX if data is too large
-        return getDaoSupport().getMongoTemplate().findAll(EntireObject.class, getResponseClassSimpleName());
+    protected List<EntireObject> retrieveData(int pageNo, int pageSize) {
+        Query query = new Query().skip((pageNo - 1) * pageSize).limit(pageSize);
+        return getDaoSupport().getMongoTemplate().find(query, EntireObject.class, getResponseClassSimpleName());
+    }
+
+    /**
+     * retrieve count of all data
+     * <p>
+     *
+     * @author chen.chen.9, May 29, 2015
+     * @return the count of all data
+     */
+    protected long retrieveCountOfData() {
+        return getDaoSupport().getMongoTemplate().count(new Query(), getResponseClassSimpleName());
     }
 
     /**

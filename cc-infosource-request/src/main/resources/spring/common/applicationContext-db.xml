@@ -7,9 +7,9 @@
 		<property name="user" value="${Database.DB.Username}" />
 		<property name="password" value="${Database.DB.Password}" />
 		<property name="driverClass" value="${Database.DB.DriverClass}" />
-		<property name="maxPoolSize" value="5" />
-		<property name="minPoolSize" value="1" />
-		<property name="initialPoolSize" value="1" />
+		<property name="maxPoolSize" value="100" />
+		<property name="minPoolSize" value="20" />
+		<property name="initialPoolSize" value="30" />
 		<property name="maxIdleTime" value="1800" />
 		<property name="idleConnectionTestPeriod" value="60" />
 		<property name="acquireRetryAttempts" value="3" />
@@ -25,7 +25,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQLInnoDBDialect
+					org.hibernate.dialect.MySQLMyISAMDialect
 				</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<!-- <prop key="hibernate.hbm2ddl.auto">create</prop> -->

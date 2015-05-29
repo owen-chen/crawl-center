@@ -91,7 +91,7 @@ public abstract class AbstractCrawlManager implements CrawlManager {
                 getConcurrentTaskExecutor().execute(new CrawlTask(crawlDriver, needToFinish, getLogContainer(), crawlJobLogBean));
             }
 
-            getLOGGER().info("{} threads have been proceeding to capture {}, todo: {}", new Object[] { threadPoolSize, crawlCode, todoSize });
+            getLOGGER().info("{} : {} threads have been proceeding to capture {}, todo: {}", new Object[] { getClassName(), threadPoolSize, crawlCode, todoSize });
 
             // 5.estimate whether or not finished
             startTime = System.currentTimeMillis();

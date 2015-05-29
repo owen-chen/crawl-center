@@ -55,7 +55,7 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
             T t = null;
             try {
                 crawlInnerLog.setStartTime(new Date(System.currentTimeMillis()));
-                crawlInnerLog.setRequestObject(requestObject);
+//                crawlInnerLog.setRequestObject(requestObject);
 
                 // if todo request has been visited, do not crawl it again
                 if (getVisitedRequestContainer().contains(requestObject.toString())) {
@@ -66,8 +66,6 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
 
                 // 2. capture by this todo request
                 t = doCapture(requestObject);
-
-                getLOGGER().info(t.toString());
 
                 // 3. insert t to MongoDB
                 if (t != null && t.isSuccess()) {

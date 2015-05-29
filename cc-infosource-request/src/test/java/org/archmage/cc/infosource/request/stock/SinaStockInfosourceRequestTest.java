@@ -6,14 +6,11 @@
 
 package org.archmage.cc.infosource.request.stock;
 
-import java.util.Arrays;
-
 import javax.annotation.Resource;
 
 import org.archmage.cc.framework.log.LogContainer;
 import org.archmage.cc.infosource.AbstractTestng;
 import org.archmage.cc.infosource.dto.request.stock.SinaStockRequestObject;
-import org.archmage.cc.infosource.dto.response.stock.Result;
 import org.archmage.cc.infosource.dto.response.stock.SinaStockResponseObject;
 import org.archmage.cc.infosource.reader.InfosourceConfigReader;
 import org.archmage.cc.infosource.reader.bean.Infosource;
@@ -36,7 +33,7 @@ public class SinaStockInfosourceRequestTest extends AbstractTestng {
     private LogContainer logContainer;
 
     @Test(dataProvider = "requestTest")
-    public void requestTest(SinaStockRequestObject sinaStockRequestObject, String expectedUrl, SinaStockResponseObject expected) throws InterruptedException {
+    public void requestTest(SinaStockRequestObject sinaStockRequestObject, String expectedUrl) throws InterruptedException {
         SinaStockInfosourceRequest sinaStockInfosourceRequest = new SinaStockInfosourceRequest(logContainer, null);
 
         Infosource infosource = isconfigReader.retrieveInfosource(sinaStockRequestObject.getCode());
@@ -46,15 +43,11 @@ public class SinaStockInfosourceRequestTest extends AbstractTestng {
 
         Assert.assertTrue(sinaStockResponseObject != null);
         Assert.assertTrue(sinaStockResponseObject.isSuccess());
-
-        Assert.assertEquals(sinaStockResponseObject.getResultList().get(0).toString(), expected.getResultList().get(0).toString());
-        Assert.assertEquals(sinaStockResponseObject.getResultList().get(1).toString(), expected.getResultList().get(1).toString());
     }
 
     @DataProvider(name = "requestTest")
     public Object[][] dataProvider() {
         return new Object[][] { { new SinaStockRequestObject("10001", 2),
-                                 "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=2&num=1000&sort=symbol&asc=1&node=hs_a",
-                                 new SinaStockResponseObject(Arrays.asList(new Result("sh603869", "603869", "北部湾旅"), new Result("sh603883", "603883", "老百姓"))) } };
+                                 "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=2&num=1000&sort=symbol&asc=1&node=hs_a" } };
     }
 }

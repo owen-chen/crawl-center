@@ -267,7 +267,7 @@ public abstract class AbstractInfosourceRequest<T extends ResponseObject> implem
         catch (IllegalAccessException e) {
             throw new InfosourceErrorException(InfosourceErrorCode.PARSER_EXCEPTION);
         }
-        subInfosourceRequestInnerLog.setParsedResult(parseObject);
+//        subInfosourceRequestInnerLog.setParsedResult(parseObject);
         subInfosourceRequestInnerLog.setParseElapsedTime(System.currentTimeMillis() - time3);
 
         return parseObject;
