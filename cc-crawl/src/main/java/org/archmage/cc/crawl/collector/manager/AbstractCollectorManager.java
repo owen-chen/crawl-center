@@ -48,7 +48,7 @@ public abstract class AbstractCollectorManager implements CollectorManager {
 
         try {
             long countOfData = retrieveCountOfData();
-            int pageSize = 1000;
+            int pageSize = 100;
             for (int pageNo = 1; pageNo <= Math.ceil((double) countOfData / pageSize); pageNo++) {
                 // 1.read data
                 long retrieveStartTime = System.currentTimeMillis();
