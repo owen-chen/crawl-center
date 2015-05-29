@@ -8,7 +8,6 @@ package org.archmage.cc.infosource.parse.historyTrade;
 
 import java.util.Scanner;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.archmage.cc.infosource.bean.InfosourceErrorException;
 import org.archmage.cc.infosource.dto.response.historyTrade.Result;
@@ -81,7 +80,9 @@ public class SinaHistoryTradeParser<T> extends BaseParser<T> {
                 }
             }
             finally {
-                IOUtils.closeQuietly(scanner);
+                if (scanner != null) {
+                    scanner.close();
+                }
             }
         }
 
