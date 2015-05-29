@@ -13,7 +13,7 @@
 				<Code>10002</Code>
 				<Runnable>true</Runnable>
 				<Class>org.archmage.cc.crawl.manager.historyTrade.SinaHistoryTradeCrawlManager</Class>
-				<ThreadPoolSize>50</ThreadPoolSize>
+				<ThreadPoolSize>100</ThreadPoolSize>
 			</Target>
 		</Targets>
 	</Crawl>

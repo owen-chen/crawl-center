@@ -7,7 +7,7 @@
 		<property name="user" value="${Database.DB.Username}" />
 		<property name="password" value="${Database.DB.Password}" />
 		<property name="driverClass" value="${Database.DB.DriverClass}" />
-		<property name="maxPoolSize" value="100" />
+		<property name="maxPoolSize" value="300" />
 		<property name="minPoolSize" value="20" />
 		<property name="initialPoolSize" value="30" />
 		<property name="maxIdleTime" value="1800" />
@@ -29,7 +29,7 @@
 				</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<!-- <prop key="hibernate.hbm2ddl.auto">create</prop> -->
-				<prop key="hibernate.jdbc.batch_size">25</prop>
+				<prop key="hibernate.jdbc.batch_size">100</prop>
 				<prop key="hibernate.jdbc.fetch_size">30</prop>
 				<prop key="hibernate.current_session_context_class">jta</prop>
 				<prop key="hibernate.connection.autocommit">true</prop>
