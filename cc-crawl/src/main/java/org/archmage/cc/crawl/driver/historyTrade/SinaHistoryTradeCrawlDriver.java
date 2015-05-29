@@ -8,6 +8,7 @@ package org.archmage.cc.crawl.driver.historyTrade;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.archmage.cc.crawl.bean.ErrorCode;
 import org.archmage.cc.crawl.container.Container;
 import org.archmage.cc.crawl.container.request.TodoRequestContainer;
@@ -85,9 +86,13 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
         }
 
         for (Stock stock : stockList) {
-            for (int year = 2014; year <= 2014; year++) {
-                for (int month = 9; month <= 9; month++) {
-                    for (int day = 17; day <= 18; day++) {
+            if (!StringUtils.startsWith(stock.getSymbol(), "sh")) {
+                continue;
+            }
+
+            for (int year = 2015; year <= 2015; year++) {
+                for (int month = 1; month <= 5; month++) {
+                    for (int day = 1; day <= 31; day++) {
                         SinaHistoryTradeRequestObject sinaHistoryTradeRequestObject = new SinaHistoryTradeRequestObject();
 
                         sinaHistoryTradeRequestObject.setCode(INFOSOURCE_CODE);
