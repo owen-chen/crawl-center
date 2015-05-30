@@ -58,7 +58,7 @@ public class CrawlTask implements Runnable {
     @Override
     public void run() {
         CrawlTaskLogBean crawlTaskLogBean = (CrawlTaskLogBean) logContainer.initializeLogBean(Thread.currentThread().getId(), new CrawlTaskLogBean());
-        crawlJobLogBean.getCrawlTaskLogList().add(crawlTaskLogBean);
+//        crawlJobLogBean.getCrawlTaskLogList().add(crawlTaskLogBean);
 
         try {
             while (!needFinished.isFinished()) {

@@ -104,6 +104,11 @@ public class SinaHistoryTradeCollectorManager extends AbstractCollectorManager {
     }
 
     @Override
+    protected int getPageSize() {
+        return 50;
+    }
+
+    @Override
     protected String getInfosourceCode() {
         return INFOSOURCE_CODE;
     }

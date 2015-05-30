@@ -48,38 +48,8 @@ public abstract class AbstractCollectorManager implements CollectorManager {
 
         try {
             long countOfData = retrieveCountOfData();
-            int pageSize = 100;
-            for (int pageNo = 1; pageNo <= Math.ceil((double) countOfData / pageSize); pageNo++) {
-                // 1.read data
-                long retrieveStartTime = System.currentTimeMillis();
-                List<EntireObject> crawledDataList = retrieveData(pageNo, pageSize);
-                collectorInnerLog.setRetrieveElapsedTime(collectorInnerLog.getRetrieveElapsedTime() + (System.currentTimeMillis() - retrieveStartTime));
-                collectorInnerLog.setRetrievedDataSize(collectorInnerLog.getRetrievedDataSize() + crawledDataList.size());
-                if (CollectionUtils.isEmpty(crawledDataList)) {
-                    throw new CrawlErrorException(ErrorCode.TEMP_DATA_NOT_EXIST_IN_MONGODB);
-                }
-
-                // 2.validate data
-                validateTotally(crawledDataList);
-
-                // 3.persist
-                long persistStartTime = System.currentTimeMillis();
-                int succeedToPersist = 0;
-                for (final EntireObject entireObject : crawledDataList) {
-                    try {
-                        putIntoDB(entireObject);
-                    }
-                    catch (Exception e) {
-                        // XXX failed to insert
-                        continue;
-                    }
-
-                    succeedToPersist++;
-                }
-                collectorInnerLog.setPersistElapsedTime(collectorInnerLog.getPersistElapsedTime() + (System.currentTimeMillis() - persistStartTime));
-                collectorInnerLog.setSucceedToPersistCount(collectorInnerLog.getSucceedToPersistCount() + succeedToPersist);
-
-                getLOGGER().info("{} is collecting: {} / {}", getResponseClassSimpleName(), Math.min(pageNo * pageSize, countOfData), countOfData);
+            for (int pageNo = 1; pageNo <= Math.ceil((double) countOfData / getPageSize()); pageNo++) {
+                doCollect(collectorInnerLog, countOfData, pageNo);
             }
 
             if (collectorInnerLog.getSucceedToPersistCount() != countOfData) {
@@ -102,6 +72,63 @@ public abstract class AbstractCollectorManager implements CollectorManager {
                 getLOGGER().error("CrawlJobLogBean is unexpectedlly null in thread: {}.", threadId);
             }
         }
+    }
+
+    /**
+     * get page size
+     * <p>
+     *
+     * @author chen.chen.9, May 30, 2015
+     * @return page size
+     */
+    protected int getPageSize() {
+        return 1000;
+    }
+
+    /**
+     * obtain temp data from mongodb and put them into db
+     * <p>
+     *
+     * @author chen.chen.9, May 30, 2015
+     * @param collectorInnerLog
+     *            {@link CollectorInnerLog}
+     * @param countOfData
+     *            count of data
+     * @param pageNo
+     *            page no
+     * @throws CrawlErrorException
+     */
+    private void doCollect(CollectorInnerLog collectorInnerLog, long countOfData, int pageNo) throws CrawlErrorException {
+        // 1.read data
+        long retrieveStartTime = System.currentTimeMillis();
+        List<EntireObject> crawledDataList = retrieveData(pageNo, getPageSize());
+        collectorInnerLog.setRetrieveElapsedTime(collectorInnerLog.getRetrieveElapsedTime() + (System.currentTimeMillis() - retrieveStartTime));
+        collectorInnerLog.setRetrievedDataSize(collectorInnerLog.getRetrievedDataSize() + crawledDataList.size());
+        if (CollectionUtils.isEmpty(crawledDataList)) {
+            throw new CrawlErrorException(ErrorCode.TEMP_DATA_NOT_EXIST_IN_MONGODB);
+        }
+
+        // 2.validate data
+        validateTotally(crawledDataList);
+
+        // 3.persist
+        long persistStartTime = System.currentTimeMillis();
+        int succeedToPersist = 0;
+        for (final EntireObject entireObject : crawledDataList) {
+            try {
+                putIntoDB(entireObject);
+            }
+            catch (Exception e) {
+                // XXX failed to insert
+                continue;
+            }
+
+            succeedToPersist++;
+        }
+        collectorInnerLog.setPersistElapsedTime(collectorInnerLog.getPersistElapsedTime() + (System.currentTimeMillis() - persistStartTime));
+        collectorInnerLog.setSucceedToPersistCount(collectorInnerLog.getSucceedToPersistCount() + succeedToPersist);
+
+        getLOGGER().info("{} is collecting: {} / {}", getResponseClassSimpleName(), Math.min(pageNo * getPageSize(), countOfData), countOfData);
     }
 
     /**
