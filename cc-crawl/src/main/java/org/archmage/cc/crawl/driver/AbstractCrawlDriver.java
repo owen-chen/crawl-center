@@ -101,7 +101,8 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
                     long threadId = Thread.currentThread().getId();
                     CrawlTaskLogBean crawlLogBean = (CrawlTaskLogBean) getLogContainer().retrieveLogBean(threadId);
                     if (crawlLogBean != null) {
-                        crawlLogBean.getInner().add(crawlInnerLog);
+//                        XXX large crawl job will trigger outOfMemoryError
+//                        crawlLogBean.getInner().add(crawlInnerLog);
                     }
                     else {
                         getLOGGER().error("CrawlLogBean is unexpectedlly null in thread: {}.", threadId);
