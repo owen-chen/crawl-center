@@ -102,5 +102,11 @@
 				<env>prd</env>
 			</properties>
 		</profile>
+		<profile>
+			<id>win</id>
+			<properties>
+				<env>win</env>
+			</properties>
+		</profile>
 	</profiles>
 </project>
