@@ -90,8 +90,8 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
                 continue;
             }
 
-            for (int year = 2015; year <= 2015; year++) {
-                for (int month = 1; month <= 5; month++) {
+            for (int year = 2014; year <= 2014; year++) {
+                for (int month = 12; month <= 12; month++) {
                     for (int day = 1; day <= 31; day++) {
                         SinaHistoryTradeRequestObject sinaHistoryTradeRequestObject = new SinaHistoryTradeRequestObject();
 
