@@ -9,6 +9,7 @@ package org.archmage.cc.crawl.driver;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.archmage.cc.crawl.bean.EntireObject;
 import org.archmage.cc.crawl.bean.ErrorCode;
@@ -41,7 +42,6 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
     public boolean capture() {
         // 1. obtain a todo request
         RequestObject requestObject = getTodoRequestContainer().shift();
-
         if (requestObject == null) {
             return false;
         }
@@ -55,7 +55,7 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
             T t = null;
             try {
                 crawlInnerLog.setStartTime(new Date(System.currentTimeMillis()));
-//                crawlInnerLog.setRequestObject(requestObject);
+                // crawlInnerLog.setRequestObject(requestObject);
 
                 // if todo request has been visited, do not crawl it again
                 if (getVisitedRequestContainer().contains(requestObject.toString())) {
@@ -69,11 +69,8 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
 
                 // 3. insert t to MongoDB
                 if (t != null && t.isSuccess()) {
-                    getMongoTemplate().insert(new EntireObject(requestObject, t), t.getClass().getSimpleName());
+                    putIntoDb(requestObject, t);
                 }
-
-                // 4. mark this todoUrl visited
-                getVisitedRequestContainer().unshift(requestObject.toString());
 
                 return t != null && t.isSuccess();
             }
@@ -92,7 +89,13 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
             catch (InvocationTargetException e) {
                 crawlInnerLog.setErrorMsg(ExceptionUtils.getStackTrace(e));
             }
+            catch (CrawlErrorException e) {
+                crawlInnerLog.setErrorMsg(ExceptionUtils.getStackTrace(e));
+            }
             finally {
+                // 4. mark this todoUrl visited
+                getVisitedRequestContainer().unshift(requestObject.toString());
+
                 // crawlInnerLog.setResponseObject(t);
                 crawlInnerLog.setEndTime(new Date(System.currentTimeMillis()));
                 crawlInnerLog.setElapsedTime(crawlInnerLog.getEndTime().getTime() - crawlInnerLog.getStartTime().getTime());
@@ -101,8 +104,11 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
                     long threadId = Thread.currentThread().getId();
                     CrawlTaskLogBean crawlLogBean = (CrawlTaskLogBean) getLogContainer().retrieveLogBean(threadId);
                     if (crawlLogBean != null) {
-//                        XXX large crawl job will trigger outOfMemoryError
-//                        crawlLogBean.getInner().add(crawlInnerLog);
+                        // XXX large crawl job will trigger outOfMemoryError
+                        // crawlLogBean.getInner().add(crawlInnerLog);
+                        if (StringUtils.isNotEmpty(crawlInnerLog.getErrorMsg())) {
+                            getLOGGER().error(crawlInnerLog.toString());
+                        }
                     }
                     else {
                         getLOGGER().error("CrawlLogBean is unexpectedlly null in thread: {}.", threadId);
@@ -117,6 +123,21 @@ public abstract class AbstractCrawlDriver<T extends ResponseObject> implements C
                 processCount--;
             }
         }
+    }
+
+    /**
+     * put crawl result into database
+     * <p>
+     *
+     * @author chen.chen.9, Jun 1, 2015
+     * @param requestObject
+     *            {@link RequestObject}
+     * @param responseObject
+     *            {@link ResponseObject}
+     * @throws CrawlErrorException
+     */
+    protected void putIntoDb(RequestObject requestObject, ResponseObject responseObject) throws CrawlErrorException {
+        getMongoTemplate().insert(new EntireObject(requestObject, responseObject), responseObject.getClass().getSimpleName());
     }
 
     @Override

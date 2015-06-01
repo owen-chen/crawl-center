@@ -32,6 +32,9 @@ public class CrawlStatus {
     /** time out */
     private Long timeout;
 
+    /** is the crawl job collect */
+    private Boolean collectable;
+
     /**
      * constructor
      */
@@ -51,13 +54,14 @@ public class CrawlStatus {
      * @param threadPoolSize
      *            threadPoolSize
      */
-    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize, long timeout) {
+    public CrawlStatus(String code, Boolean runnable, Integer status, Integer threadPoolSize, long timeout, Boolean collectable) {
         super();
         this.code = code;
         this.runnable = runnable;
         this.status = status;
         this.threadPoolSize = threadPoolSize;
         this.timeout = timeout;
+        this.collectable = collectable;
     }
 
     /**
@@ -158,7 +162,8 @@ public class CrawlStatus {
 
     @Override
     public String toString() {
-        return "CrawlStatus [_id=" + _id + ", code=" + code + ", runnable=" + runnable + ", status=" + status + ", threadPoolSize=" + threadPoolSize + ", timeout=" + timeout + "]";
+        return "CrawlStatus [_id=" + _id + ", code=" + code + ", runnable=" + runnable + ", status=" + status + ", threadPoolSize=" + threadPoolSize + ", timeout=" + timeout
+               + ", collectable=" + collectable + "]";
     }
 
     /**
@@ -222,5 +227,26 @@ public class CrawlStatus {
      */
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
+    }
+
+    /**
+     * getter method
+     * 
+     * @see CrawlStatus#collectable
+     * @return the collectable
+     */
+    public Boolean getCollectable() {
+        return collectable;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see CrawlStatus#collectable
+     * @param collectable
+     *            the collectable to set
+     */
+    public void setCollectable(Boolean collectable) {
+        this.collectable = collectable;
     }
 }

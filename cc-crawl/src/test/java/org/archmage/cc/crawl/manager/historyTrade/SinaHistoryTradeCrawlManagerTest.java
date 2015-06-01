@@ -17,10 +17,7 @@ import org.archmage.cc.crawl.AbstractTestng;
 import org.archmage.cc.crawl.driver.historyTrade.SinaHistoryTradeCrawlDriver;
 import org.archmage.cc.crawl.manager.historyTrade.mock.MockSinaHistoryTradeCrawlManager;
 import org.archmage.cc.crawl.model.CrawlStatus;
-import org.archmage.cc.infosource.dto.response.historyTrade.SinaHistoryTradeResponseObject;
-import org.archmage.cc.model.stock.HistoryTrade;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -39,9 +36,6 @@ public class SinaHistoryTradeCrawlManagerTest extends AbstractTestng {
     private MongoTemplate mongoTemplate;
 
     @Resource
-    private HibernateTemplate hibernateTemplate;
-
-    @Resource
     private XmlConfiguration sysconfig;
 
     @Resource
@@ -56,19 +50,17 @@ public class SinaHistoryTradeCrawlManagerTest extends AbstractTestng {
         Assert.assertEquals(crawlStatusList.size(), 1);
 
         CrawlStatus actualCrawlStatus = crawlStatusList.get(0);
-        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaHistoryTradeCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 50, Integer.MAX_VALUE);
+        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaHistoryTradeCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 50, Integer.MAX_VALUE, false);
         expectedCrawlStatus.set_id(actualCrawlStatus.get_id());
         Assert.assertEquals(actualCrawlStatus.toString(), expectedCrawlStatus.toString());
-
-        Assert.assertFalse(mongoTemplate.collectionExists(SinaHistoryTradeResponseObject.class));
-        List<HistoryTrade> historyTradeList = hibernateTemplate.loadAll(HistoryTrade.class);
-        Assert.assertTrue(CollectionUtils.isNotEmpty(historyTradeList));
 
         Set<String> set = mongoTemplate.getCollectionNames();
         Assert.assertTrue(CollectionUtils.isNotEmpty(set));
         boolean assertCondition = false;
         for (String collectionName : set) {
-            if (collectionName.startsWith(SinaHistoryTradeResponseObject.class.getSimpleName() + sysconfig.getString("Collector.BackupEndName"))) {
+            if (collectionName.startsWith("HistoryTrade.")) {
+                Assert.assertTrue(mongoTemplate.collectionExists(collectionName));
+                mongoTemplate.dropCollection(collectionName);
                 assertCondition = true;
             }
         }
@@ -82,12 +74,10 @@ public class SinaHistoryTradeCrawlManagerTest extends AbstractTestng {
     @AfterMethod
     @BeforeClass
     public void afterMethod() {
-        mongoTemplate.dropCollection(SinaHistoryTradeResponseObject.class);
-
         Set<String> set = mongoTemplate.getCollectionNames();
         if (CollectionUtils.isNotEmpty(set)) {
             for (String collectionName : set) {
-                if (collectionName.startsWith(SinaHistoryTradeResponseObject.class.getSimpleName() + sysconfig.getString("Collector.BackupEndName"))) {
+                if (collectionName.startsWith("HistoryTrade.")) {
                     mongoTemplate.dropCollection(collectionName);
 
                     continue;
@@ -96,7 +86,5 @@ public class SinaHistoryTradeCrawlManagerTest extends AbstractTestng {
         }
 
         mongoTemplate.dropCollection(CrawlStatus.class);
-
-        hibernateTemplate.deleteAll(hibernateTemplate.loadAll(HistoryTrade.class));
     }
 }

@@ -55,7 +55,7 @@ public class SinaStockCrawlManagerTest extends AbstractTestng {
         Assert.assertEquals(crawlStatusList.size(), 1);
 
         CrawlStatus actualCrawlStatus = crawlStatusList.get(0);
-        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaStockCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 5, 100 * 1000);
+        CrawlStatus expectedCrawlStatus = new CrawlStatus(SinaStockCrawlDriver.INFOSOURCE_CODE, true, CrawlStatus.Status.FINISHED, 5, 100 * 1000, true);
         expectedCrawlStatus.set_id(actualCrawlStatus.get_id());
         Assert.assertEquals(actualCrawlStatus.toString(), expectedCrawlStatus.toString());
 
