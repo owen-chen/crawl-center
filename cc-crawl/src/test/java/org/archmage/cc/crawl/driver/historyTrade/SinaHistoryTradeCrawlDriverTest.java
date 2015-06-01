@@ -6,7 +6,6 @@
 
 package org.archmage.cc.crawl.driver.historyTrade;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,12 +14,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.archmage.cc.crawl.AbstractTestng;
 import org.archmage.cc.crawl.bean.EntireObject;
 import org.archmage.cc.crawl.daosupport.ExtendedDaoSupport;
-import org.archmage.cc.crawl.driver.stock.SinaStockCrawlDriver;
+import org.archmage.cc.crawl.driver.historyTrade.mock.MockSinaHistoryTradeCrawlDriver;
 import org.archmage.cc.crawl.exception.CrawlErrorException;
 import org.archmage.cc.framework.log.LogContainer;
+import org.archmage.cc.infosource.dto.request.historyTrade.SinaHistoryTradeRequestObject;
 import org.archmage.cc.infosource.dto.response.historyTrade.SinaHistoryTradeResponseObject;
 import org.archmage.cc.infosource.factory.InfosourceRequestFactory;
-import org.archmage.cc.model.stock.Stock;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -44,8 +43,8 @@ public class SinaHistoryTradeCrawlDriverTest extends AbstractTestng {
     @Resource
     private LogContainer logContainer;
 
-    /** {@link SinaStockCrawlDriver} */
-    private SinaHistoryTradeCrawlDriver sinaHistoryTradeCrawlDriver;
+    /** {@link MockSinaHistoryTradeCrawlDriver} */
+    private MockSinaHistoryTradeCrawlDriver sinaHistoryTradeCrawlDriver;
 
     @Test
     public void obtainTodoUrlTest() throws CrawlErrorException {
@@ -56,32 +55,32 @@ public class SinaHistoryTradeCrawlDriverTest extends AbstractTestng {
     }
 
     @Test
+    public void generateCollectionNameTest() {
+        SinaHistoryTradeRequestObject sinaHistoryTradeRequestObject = new SinaHistoryTradeRequestObject();
+        sinaHistoryTradeRequestObject.setSymbol("sh600100");
+        sinaHistoryTradeRequestObject.setYear(2014);
+
+        Assert.assertEquals(sinaHistoryTradeCrawlDriver.generateCollectionName(sinaHistoryTradeRequestObject), "HistoryTrade.sh.10.2014");
+    }
+
+    @Test
     public void captureTest() throws CrawlErrorException {
         sinaHistoryTradeCrawlDriver.obtainTodoRequest();
 
         // 第一次爬取
         Assert.assertTrue(sinaHistoryTradeCrawlDriver.capture());
-        Assert.assertFalse(sinaHistoryTradeCrawlDriver.getTodoRequestContainer().empty());
+        Assert.assertTrue(sinaHistoryTradeCrawlDriver.getTodoRequestContainer().empty());
         Assert.assertFalse(sinaHistoryTradeCrawlDriver.getVisitedRequestContainer().empty());
         Assert.assertEquals(sinaHistoryTradeCrawlDriver.getVisitedRequestContainer().size(), 1);
 
-        List<EntireObject> entireObjectList = daoSupport.getMongoTemplate().findAll(EntireObject.class, SinaHistoryTradeResponseObject.class.getSimpleName());
+        List<EntireObject> entireObjectList = daoSupport.getMongoTemplate().findAll(EntireObject.class, "HistoryTrade.sh.0.2015");
         Assert.assertTrue(CollectionUtils.isNotEmpty(entireObjectList));
-        Assert.assertEquals(entireObjectList.size(), 1);
+        Assert.assertTrue(entireObjectList.size() > 2000);
 
-        Assert.assertFalse(sinaHistoryTradeCrawlDriver.isCrawlFinish());
+        Assert.assertTrue(sinaHistoryTradeCrawlDriver.isCrawlFinish());
 
         // 第二次爬取
-        Assert.assertTrue(sinaHistoryTradeCrawlDriver.capture());
-        Assert.assertFalse(sinaHistoryTradeCrawlDriver.getTodoRequestContainer().empty());
-        Assert.assertFalse(sinaHistoryTradeCrawlDriver.getVisitedRequestContainer().empty());
-        Assert.assertEquals(sinaHistoryTradeCrawlDriver.getVisitedRequestContainer().size(), 2);
-
-        entireObjectList = daoSupport.getMongoTemplate().findAll(EntireObject.class, SinaHistoryTradeResponseObject.class.getSimpleName());
-        Assert.assertTrue(CollectionUtils.isNotEmpty(entireObjectList));
-        Assert.assertEquals(entireObjectList.size(), 2);
-
-        Assert.assertFalse(sinaHistoryTradeCrawlDriver.isCrawlFinish());
+        Assert.assertFalse(sinaHistoryTradeCrawlDriver.capture());
     }
 
     @Test
@@ -91,25 +90,19 @@ public class SinaHistoryTradeCrawlDriverTest extends AbstractTestng {
 
     @BeforeMethod
     public void beforeClass() {
-        sinaHistoryTradeCrawlDriver = new SinaHistoryTradeCrawlDriver(logContainer, daoSupport, infosourceRequestFactory);
+        sinaHistoryTradeCrawlDriver = new MockSinaHistoryTradeCrawlDriver(logContainer, daoSupport, infosourceRequestFactory);
 
         Assert.assertTrue(sinaHistoryTradeCrawlDriver.getTodoRequestContainer().empty());
         Assert.assertTrue(sinaHistoryTradeCrawlDriver.getVisitedRequestContainer().empty());
 
-        Assert.assertTrue(CollectionUtils.isEmpty(daoSupport.getMongoTemplate().findAll(EntireObject.class, SinaHistoryTradeResponseObject.class.getSimpleName())));
-
-        daoSupport.getHibernateTemplate().save(new Stock("sh600000", "600000", "浦发银行", new Date().getTime()));
-        daoSupport.getHibernateTemplate().save(new Stock("sh600004", "600004", "白云机场", new Date().getTime()));
-        Assert.assertEquals(daoSupport.getHibernateTemplate().loadAll(Stock.class).size(), 2);
+        Assert.assertTrue(CollectionUtils.isEmpty(daoSupport.getMongoTemplate().findAll(EntireObject.class, "HistoryTrade.sh.0.2015")));
     }
 
     @BeforeClass
     @AfterMethod
     public void afterMethod() {
-        daoSupport.getMongoTemplate().dropCollection(SinaHistoryTradeResponseObject.class.getSimpleName());
+        daoSupport.getMongoTemplate().dropCollection("HistoryTrade.sh.0.2015");
 
-        Assert.assertTrue(CollectionUtils.isEmpty(daoSupport.getMongoTemplate().findAll(EntireObject.class, SinaHistoryTradeResponseObject.class.getSimpleName())));
-
-        daoSupport.getHibernateTemplate().deleteAll(daoSupport.getHibernateTemplate().loadAll(Stock.class));
+        Assert.assertTrue(CollectionUtils.isEmpty(daoSupport.getMongoTemplate().findAll(EntireObject.class, "HistoryTrade.sh.0.2015")));
     }
 }

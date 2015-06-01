@@ -114,7 +114,9 @@ public abstract class AbstractCrawlManager implements CrawlManager {
                     crawlStatus.setStatus(CrawlStatus.Status.DATA_COLLECTOR);
                     saveCrawlStatus(crawlStatus);
 
-                    getCollectorManager().collect();
+                    if (crawlStatus.getCollectable()) {
+                        getCollectorManager().collect();
+                    }
 
                     crawlStatus.setStatus(CrawlStatus.Status.FINISHED);
                     saveCrawlStatus(crawlStatus);

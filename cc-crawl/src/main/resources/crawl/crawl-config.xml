@@ -8,12 +8,14 @@
 				<Class>org.archmage.cc.crawl.manager.stock.SinaStockCrawlManager</Class>
 				<ThreadPoolSize>5</ThreadPoolSize>
 				<Timeout title='time unit is second'>100</Timeout>
+				<Collectable>true</Collectable>
 			</Target>
 			<Target>
 				<Code>10002</Code>
 				<Runnable>true</Runnable>
 				<Class>org.archmage.cc.crawl.manager.historyTrade.SinaHistoryTradeCrawlManager</Class>
 				<ThreadPoolSize>50</ThreadPoolSize>
+				<Collectable>false</Collectable>
 			</Target>
 		</Targets>
 	</Crawl>
