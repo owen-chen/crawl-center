@@ -35,6 +35,9 @@ public class HistoryTrade {
     /** minute */
     private String minute;
 
+    /** second */
+    private String second;
+
     /** current quote */
     private String current;
 
@@ -69,7 +72,7 @@ public class HistoryTrade {
      * @param feature
      */
     public HistoryTrade(String symbol, String currentTime, String current, String quoteTrend, String dealAmount, String dealFigure, String feature, String year, String month,
-                        String day, String hour, String minute) {
+                        String day, String hour, String minute, String second) {
         super();
         this.symbol = symbol;
         this.currentTime = currentTime;
@@ -83,6 +86,7 @@ public class HistoryTrade {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
+        this.second = second;
     }
 
     /**
@@ -341,6 +345,28 @@ public class HistoryTrade {
     @Override
     public String toString() {
         return "HistoryTrade [symbol=" + symbol + ", currentTime=" + currentTime + ", year=" + year + ", month=" + month + ", day=" + day + ", hour=" + hour + ", minute=" + minute
-               + ", current=" + current + ", quoteTrend=" + quoteTrend + ", dealAmount=" + dealAmount + ", dealFigure=" + dealFigure + ", feature=" + feature + "]";
+               + ", second=" + second + ", current=" + current + ", quoteTrend=" + quoteTrend + ", dealAmount=" + dealAmount + ", dealFigure=" + dealFigure + ", feature="
+               + feature + "]";
+    }
+
+    /**
+     * getter method
+     * 
+     * @see HistoryTrade#second
+     * @return the second
+     */
+    public String getSecond() {
+        return second;
+    }
+
+    /**
+     * setter method
+     * 
+     * @see HistoryTrade#second
+     * @param second
+     *            the second to set
+     */
+    public void setSecond(String second) {
+        this.second = second;
     }
 }

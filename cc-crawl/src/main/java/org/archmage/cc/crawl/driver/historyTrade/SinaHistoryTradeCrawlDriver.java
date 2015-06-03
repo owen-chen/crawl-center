@@ -129,6 +129,7 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
             historyTrade.setDay(Integer.toString(sinaHistoryTradeRequestObject.getDay()));
             historyTrade.setHour(result.getHour());
             historyTrade.setMinute(result.getMinute());
+            historyTrade.setSecond(result.getSecond());
 
             // shard because of the large data
             getMongoTemplate().insert(historyTrade, generateCollectionName(sinaHistoryTradeRequestObject));
