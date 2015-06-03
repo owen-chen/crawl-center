@@ -96,7 +96,7 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
         if (CollectionUtils.isEmpty(resultList)) {
             throw new CrawlErrorException(ErrorCode.NO_HISTORY_TRADE_THIS_DAY);
         }
-        else if (resultList.size() < 2000) {
+        else if (resultList.size() < 100) {
             throw new CrawlErrorException(ErrorCode.LACKS_OF_HISTORY_TRADE_THIS_DAY);
         }
 
