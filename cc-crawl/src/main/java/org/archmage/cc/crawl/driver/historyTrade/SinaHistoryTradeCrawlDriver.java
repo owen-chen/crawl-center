@@ -96,6 +96,9 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
         if (CollectionUtils.isEmpty(resultList)) {
             throw new CrawlErrorException(ErrorCode.NO_HISTORY_TRADE_THIS_DAY);
         }
+        else if (resultList.size() < 2000) {
+            throw new CrawlErrorException(ErrorCode.LACKS_OF_HISTORY_TRADE_THIS_DAY);
+        }
 
         for (Result result : resultList) {
             HistoryTrade historyTrade = new HistoryTrade();
@@ -125,7 +128,7 @@ public class SinaHistoryTradeCrawlDriver extends AbstractCrawlDriver<SinaHistory
             historyTrade.setMonth(Integer.toString(sinaHistoryTradeRequestObject.getMonth()));
             historyTrade.setDay(Integer.toString(sinaHistoryTradeRequestObject.getDay()));
             historyTrade.setHour(result.getHour());
-            historyTrade.setMonth(result.getMinute());
+            historyTrade.setMinute(result.getMinute());
 
             // shard because of the large data
             getMongoTemplate().insert(historyTrade, generateCollectionName(sinaHistoryTradeRequestObject));
